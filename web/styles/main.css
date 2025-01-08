@@ -31,7 +31,7 @@ body{
     font-weight: bold;
 }
 
-.navbar-links{
+.navbar{
     text-align: center;
     display: flex;
     justify-content: space-between;
@@ -40,9 +40,7 @@ body{
 .navbar-links:first-child{
     margin: 0 30px;
 }
-.navbar  {
-    
-}
+
 .aaa{
     color: green;
     font-size: 90;

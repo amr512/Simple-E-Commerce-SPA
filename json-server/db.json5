@@ -1,4 +1,9 @@
 {
+    /* 
+    -------------------------------------------------------------------------------- 
+    |                              user structure                                  |
+    -------------------------------------------------------------------------------- 
+    */
     /* user: {
         id: string, // auto-generated
         username: string,
@@ -11,6 +16,11 @@
         address: string // could change to an array 
     }*/ 
     users: [],
+    /* 
+    -------------------------------------------------------------------------------- 
+    |                              product structure                               |
+    -------------------------------------------------------------------------------- 
+    */
     /* product: {
         id: string,
         name: string, // readable name
@@ -19,19 +29,30 @@
         images: string[],
     }*/
     products: [],
+    /* 
+    -------------------------------------------------------------------------------- 
+    |                              review structure                                |
+    -------------------------------------------------------------------------------- 
+    */
     /* review:{
         id: string, // probably not useful
         product-id: string,
         user-id: string,
+        price: number,
         rating: number // 0 < value <= 5,
         review: string // optional 
     }*/
     reviews:[],
+    /* 
+    -------------------------------------------------------------------------------- 
+    |                              order structure                                 |
+    -------------------------------------------------------------------------------- 
+    */
     /* order:{
         id: string // probably not useful here
         products:{
             id:string,
-            purchase-price: number/string idk doesn't matter
+            purchase-price: number // stored here in case it changes after the order
         },
         user-id: string,
         user-address: string, 
