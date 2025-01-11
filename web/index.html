@@ -1,23 +1,41 @@
+
 <html>
     <head>
-        <title>Shop - Home</title>
+        <title>Store - Home</title>
         <!-- import helpers.js as a module -->
         <script type="module" src="scripts/constants.js"></script>
         <script type="module" src="scripts/helpers.js"></script>
         <script type="module" src="scripts/main.js"></script>
         <link href="styles/main.css" rel="stylesheet" ></link>
+        <link href="styles/login.css" rel="stylesheet" ></link>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+
     </head>
     <body>
+        <i class="fa-solid fa-spinner-third gray fa-spin fa-spin-reverse"></i>
         <div class="navbar" id="navbar">
-                <h1 class="strongest">ahjsdgajhsdg</h1>
-                <!-- <a class="nav-link" id="home">Home</a>
-                <a class="nav-link" id="products">Products</a>
-                 <a class="nav-link" id="about.html">About</a>
-                <a class="nav-link" id="user">My Account</a>
-                <a class="nav-link" id="login">Login</a> -->
+                <div class="logo" id="logo">
+                    <h1>Brick.Store</h1>
+                    <h2>Get Bricks!</h2>
+                </div>
+                <div class="nav-links" id="nav-links">
+                    <a class="nav-link" id="home">Home</a>
+                    <a class="nav-link" id="bigbricks">BigBricks</a>
+                    <a class="nav-link" id="smallbricks">SmallBricks</a>
+                    <a class="nav-link" id="notbricks">NotBricks</a>
+                </div>
+                <div class="search">
+                    <input id="search" type="text" placeholder="Search..." />
+                    <i class="fa-solid fa-magnifying-glass" class="search-button"></i>
+                </div>
+                <div class="icons" id="icons">
+                    <a href="/web/pages/login.html">
+                        <i class="fa-solid fa-user"></i>
+                    </a>
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </div>
         </div>
             <div>
-                Welcome to <span class="brand strong">[Shop]</span>; the place for all your shopping needs!
             </div>
             <div id="content">
 

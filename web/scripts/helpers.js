@@ -4,70 +4,102 @@ const navigateTo = async function (
   name = String(),
   window = new Window()
 ) {
-  if (typeof path != "string") return;
+  // if (typeof path != "string") return;
+  
   const page = await (await fetch(path)).text();
-  window.location.hash = name;
-  // this.window.history.pushState({"html":page,"pageTitle":pathParts[pathParts.length-1]},"",relativePath)
+  window.location.assign("#" + name);
   return page;
 };
 
 class DocElement {
   element;
-  constructor(_element) {
-    if(!_element.constructor.name.includes("Element"))
-        this.element = document.createElement(_element);
-    else
-        this.element = _element;
+  constructor(
+    _element,
+    _text = undefined,
+    _attributes = {},
+    _classes = [],
+    _css = {}
+  ) {
+    if (!_element.constructor.name.includes("Element")) {
+      this.element = document.createElement(_element);
+    } else {
+      this.element = _element;
+    }
+    if (typeof _text == "string") this.text(_text);
+    if (_attributes) {
+      Object.entries(_attributes).forEach(([key, value]) => {
+        this.setAttribute(key, value);
+      });
+    }
+    if (_classes) {
+      _classes.forEach((className) => {
+        this.addClass(className);
+      });
+    }
+    if (_css) {
+      Object.entries(_css).forEach(([key, value]) => {
+        this.element.style[key] = value;
+      });
+    }
     return this;
   }
-  setAttribute(key, value) {
-    this.element.setAttribute(key, value);
+  appendTo(selector) {
+    document.querySelector(selector).appendChild(this.element);
     return this;
   }
-  getAttribute(key) {
-    return this.element.getAttribute(key);
+  text(text) {
+    this.element.innerText = text;
+    return this;
   }
   addClass(className) {
     this.element.classList.add(className);
+    return this;
+  }
+  style(attribute, value) {
+    this.element.style[attribute] = value;
     return this;
   }
   removeClass(className) {
     this.element.classList.remove(className);
     return this;
   }
-  toggleClass(className) {
-    this.element.classList.toggle(className);
+  setAttribute(attribute, value) {
+    this.element[attribute] = value;
     return this;
   }
-  appendChild(child) {
-    this.element.appendChild(child);
-    return this;
+  getAttribute(attribute) {
+    return this.element[attribute];
   }
-  appendTo(parentId) {
-    document.getElementById(parentId).appendChild(this.element);
-    return this;
-  }
-  html(html) {
-    if (html == undefined) {
-      return this.element.innerHTML;
-    } else {
-      this.element.innerHTML = html;
-      return this;
-    }
-    // this.element.innerHTML = html
-    // return this
-  }
-  text(text) {
-    this.element.innerText = text;
-    return this;
-  }
-  on(event, listener) {
-    this.element.addEventListener(event, listener);
-    return this;
-  }
+  this = this.element;
 }
 
-export { navigateTo, DocElement };
+const validateInput = (inputElement, validateAs = inputElement.type) => {
+  let isValid = false;
+  switch (validateAs) {
+    case "email":
+      isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputElement.value);
+      break;
+    case "password":
+      isValid = inputElement.value.length >= 8;
+      break;
+    default:
+      isValid = inputElement.value.length > 0;
+      break;
+  }
+  if (!isValid) {
+    inputElement.classList.add("invalid");
+    document
+      .getElementById(`invalid-${inputElement.name}`)
+      ?.classList.remove("hidden");
+  } else {
+    inputElement.classList.remove("invalid");
+    document
+      .getElementById(`invalid-${inputElement.name}`)
+      ?.classList.add("hidden");
+  }
+  return isValid;
+};
+export { navigateTo, DocElement, validateInput };
 // #endregion helpers
 
 // #region proto-changes
