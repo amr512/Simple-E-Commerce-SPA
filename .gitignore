@@ -1,3 +1,5 @@
 node_modules/
 jsProject.* 
 lazystuff.js
+test.js
+/web/.vscode

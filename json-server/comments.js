@@ -1,4 +1,20 @@
 let obj={
+    
+// {
+//     id: NIL,
+//     email: "admin@bricks.store",
+//     password: "admin123", // should probably hash this if there's time
+//     name: "Admin",
+//     orderIds: [], // for easier access (redundant info, might remove)
+//     seller: true,
+//     storeID: NIL,
+//     paymentMethod: undefined,
+//     deleted: false, // may be useful????
+//     address: undefined, // could change to an array ,
+//     phone: "0123456789"
+// }
+
+
     /* 
     -------------------------------------------------------------------------------- 
     |                              user structure                                  |
@@ -6,15 +22,15 @@ let obj={
     */
     /* user: {
         id: string, // auto-generated
-        username: string,
+        email: string,
         password: string, // should probably hash this if there's time
         name: string,
-        order-ids: string[], // for easier access (redundant info, might remove)
-        profile-picture: string // path/base64string, to be decided
+        orderIds: string[], // for easier access (redundant info, might remove)
         seller: boolean,
-
-        banned: boolean, // may be useful????
-        address: string // could change to an array 
+        paymentMethod:string,
+        deleted: boolean, // may be useful????
+        address: string // could change to an array ,
+        phone: number
     }*/ 
     users: [],
 
@@ -29,6 +45,8 @@ let obj={
         name: string, // readable name
         path: string, // not-so-readable short url
         description: string,
+        price: number,
+        category: string,
         images: string[],
     }*/
     products: [],

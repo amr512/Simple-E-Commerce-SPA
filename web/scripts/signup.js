@@ -26,7 +26,11 @@ window.addEventListener("load", () => {
         password:data.get("password"),
         name:data.get("name"),
         phone:data.get("phone"),
-        address:data.get("address")
+        address:data.get("address"),
+        seller:false,
+        deleted:false,
+        orderIds:[],
+        paymentMethod:undefined
     }
     if((await (await fetch(`http://localhost:5500/users?email=${user.email.trim().toLowerCase()}`)).json()).length==0){
         await fetch("http://localhost:5500/users",{

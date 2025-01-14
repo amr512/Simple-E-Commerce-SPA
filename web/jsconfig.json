@@ -1,5 +1,8 @@
 {
   "typeAcquisition": {
-    "include": ["./scripts/*.js"]
+    "include": [
+      "./scripts/*.js",
+    
+  ]
   }
 }

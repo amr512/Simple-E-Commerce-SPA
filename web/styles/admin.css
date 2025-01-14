@@ -1,0 +1,130 @@
+/* tabs styles */
+/* tabs & tablinks */
+.deleted-check{
+  display: flex;
+  /* align to the left */
+  margin: 5px;
+}
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  width: 100%;
+  display: flex;
+  justify-content: stretch;
+  flex-direction: row;
+}
+
+.tab input {
+  flex:1 1 auto;
+  cursor: pointer;
+  margin: 0;
+  border-radius: 0px;
+  padding: 14px 16px;
+  font-size: 17px;
+}
+
+.tab input:hover {
+  background-color: #ddd;
+}
+
+.tab input.active {
+  background-color: #ccc;
+}
+
+.tabs {
+  display: block;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+  width: 100%;
+}
+
+table{
+  
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+  max-width: 20vw;
+  /* break lines when space is not enough */
+  white-space: pre-wrap;  
+  word-break: break-word;
+}
+td>img{
+  width: 150px;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #ddd;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.hidden {
+  display: none;
+}
+
+.updated {
+  color: blue;
+  
+}
+.deleted {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.seller-row * {
+  color: green;
+}
+
+.admin-row * {
+  color:rgb(8, 0, 255);
+}
+.progress{
+  cursor: progress;
+  pointer-events: none;
+}
+form{
+  display: flex;
+  flex-direction: column;
+}
+form > div{
+  display: flex;
+  flex-flow: column wrap;
+  width: fit-content;
+  justify-content: space-evenly;
+  margin: auto;
+}
+form > div>div{
+  flex: 1 1 30%;
+  padding-inline: 2px;
+  display: flex;
+  flex-direction: column;
+}
+#page-controls{
+    border: 1px solid #ccc;
+    border-bottom: none;
+  width: 100%;
+}
+/* form > div > div *{
+  flex-direction: column;
+  display: block;
+}
+form > [type=button]{
+  flex: 1 1 ;
+} */

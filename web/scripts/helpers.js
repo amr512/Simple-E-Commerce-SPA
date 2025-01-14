@@ -44,7 +44,15 @@ class DocElement {
     return this;
   }
   appendTo(selector) {
+    selector.constructor.name == "DocElement"?
+    selector.append(this.element):
     document.querySelector(selector).appendChild(this.element);
+    return this;
+  }
+  append(element) {
+    element.constructor.name == "DocElement"?
+    this.element.appendChild(element.element):
+    this.element.appendChild(element);
     return this;
   }
   text(text) {

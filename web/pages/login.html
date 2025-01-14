@@ -1,26 +1,58 @@
 <html>
   <head>
-    <title></title>
-    <script src="../scripts/login.js"></script>
-    <link href="../styles/login.css" rel="stylesheet" />
+    <title>Store - Login</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module" src="/scripts/constants.js"></script>
+    <script type="module" src="/scripts/helpers.js"></script>
+    <script type="module" src="/scripts/login.js"></script>
+    <link href="/styles/main.css" rel="stylesheet" />
+    <link href="/styles/form.css" rel="stylesheet" />
+    <link href="/styles/login.css" rel="stylesheet" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <div class="container">
+    <div class="nav-container">
+      <div class="navbar" id="navbar">
+        <div class="logo" id="logo">
+          <a href="/index.html">
+            <img class="nav-logo" src="../images/logo.png" />
+          </a>
+        </div>
+        <!-- <a class="nav-link" id="home" href="/index.html"><i class="fa-solid fa-house"></i> Home</a> -->
+        <div class="nav-links" id="nav-links"></div>
+        <div class="search">
+          <input id="search" type="text" placeholder="Search..." />
+          <i class="fa-solid fa-magnifying-glass" class="search-button"></i>
+        </div>
+        <div class="icons" id="icons">
+          <a href="/pages/login.html"><i class="fa-solid fa-user"></i></a>
+          <i class="fa-solid fa-cart-shopping"></i>
+        </div>
+      </div>
+    </div>
+    <div class="content">
       <p>Log In</p>
-      <form action="#">
+      <p id="error" class="error"></p>
+      <form action="">
         <div>
           <label for="email">E-Mail</label>
-          <input type="email" required name="email" id="email" />
+          <input id="email" type="email" required name="email" id="email" />
         </div>
         <div>
           <label for="password">Password</label>
-          <input type="password" name="password" />
+          <input id="password" type="password" name="password" />
         </div>
-        <input type="submit" value="Log In" />
+        <a href="#">Forgot Password?</a>
+        <div>
+          <input type="submit" value="Log In" />
+        </div>
       </form>
 
-      <a href="#">Forgot Password?</a>
+      
+      <p>Don't have an account? <a href="/pages/signup.html">Sign Up</a></p>
     </div>
-    <p>Don't have an account? <a href="/web/pages/signup.html">Sign Up</a></p>
 </body>
 </html>

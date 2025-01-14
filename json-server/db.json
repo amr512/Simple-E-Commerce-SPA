@@ -1,0 +1,264 @@
+{
+  "users": [
+    {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "email": "admin@bricks.store",
+      "password": "admin123",
+      "name": "Admin",
+      "orderIDs": [],
+      "seller": true,
+      "storeID": "00000000-0000-0000-0000-000000000000",
+      "deleted": false,
+      "admin": true,
+      "phone": "0123456789",
+      "address": "Here, he lives"
+    },
+    {
+      "id": "11111111-1111-1111-1111-111111111111",
+      "email": "user@bricks.store",
+      "password": "user123",
+      "name": "User1",
+      "orderIDs": [],
+      "seller": false,
+      "storeID": null,
+      "deleted": true,
+      "phone": "0123456789",
+      "address": "wahoooasdasdda"
+    },
+    {
+      "id": "22222222-2222-2222-2222-222222222222",
+      "email": "user2@bricks.store",
+      "password": "user123",
+      "name": "User2",
+      "orderIDs": [],
+      "seller": true,
+      "storeID": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+      "deleted": false,
+      "phone": "0123456789",
+      "address": "wahoooasdasdda"
+    },
+    {
+      "id": "33333333-3333-3333-3333-333333333333",
+      "email": "user3@bricks.store",
+      "password": "user123",
+      "name": "User3",
+      "orderIDs": [],
+      "seller": true,
+      "storeID": null,
+      "deleted": true,
+      "phone": "0123456789",
+      "address": "wahoooasdasdda"
+    },
+    {
+      "id": "44444444-4444-4444-4444-444444444444",
+      "email": "user4@bricks.store",
+      "password": "user123",
+      "name": "User4",
+      "orderIDs": [],
+      "seller": false,
+      "storeID": null,
+      "deleted": false,
+      "phone": "0123456789",
+      "address": "wahoooasdasdda"
+    },
+    {
+      "id": "55555555-5555-5555-5555-555555555555",
+      "email": "user5@bricks.store",
+      "password": "user123",
+      "name": "User5",
+      "orderIDs": [],
+      "seller": false,
+      "storeID": null,
+      "deleted": false,
+      "phone": "0123456789",
+      "address": "wahoooasdasdda"
+    },
+    {
+      "id": "66666666-6666-6666-6666-666666666666",
+      "email": "user6@bricks.store",
+      "password": "user123",
+      "name": "User6",
+      "orderIDs": [
+        "23",
+        "33",
+        "56"
+      ],
+      "seller": false,
+      "storeID": null,
+      "deleted": false,
+      "phone": "0123456789",
+      "address": "wahoooasdasdda"
+    },
+    {
+      "id": "77777777-7777-7777-7777-777777777777",
+      "email": "user7@bricks.store",
+      "password": "user123",
+      "name": "User7",
+      "orderIDs": [],
+      "seller": false,
+      "storeID": null,
+      "deleted": true,
+      "phone": "0123456789",
+      "address": "wahoooasdasdda"
+    },
+    {
+      "id": "88888888-8888-8888-8888-888888888888",
+      "email": "user8@bricks.store",
+      "password": "user123",
+      "name": "User8",
+      "orderIDs": [],
+      "seller": false,
+      "storeID": null,
+      "deleted": false,
+      "phone": "0123456789",
+      "address": "wahoooasdasdda"
+    },
+    {
+      "id": "99999999-9999-9999-9999-999999999999",
+      "email": "user9@bricks.store",
+      "password": "user123",
+      "name": "User9",
+      "orderIDs": [],
+      "seller": false,
+      "storeID": null,
+      "deleted": true,
+      "phone": "0123456789",
+      "address": "wahoooasdasdda"
+    },
+    {
+      "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "email": "user10@bricks.store",
+      "password": "user123",
+      "name": "User10",
+      "orderIDs": [],
+      "seller": true,
+      "storeID": null,
+      "deleted": false,
+      "phone": "0123456789",
+      "address": "wahoooasdasdda"
+    },
+    {
+      "id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "email": "user11@bricks.store",
+      "password": "user123",
+      "name": "User11",
+      "orderIDs": [],
+      "seller": false,
+      "storeID": null,
+      "deleted": false,
+      "phone": "0123456789",
+      "address": "wahoooasdasdda"
+    }
+  ],
+  "stores": [
+    {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "ownerID": "00000000-0000-0000-0000-000000000000",
+      "name": "bricks.store"
+    },
+    {
+      "id": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+      "ownerID": "22222222-2222-2222-2222-222222222222",
+      "name": "testStore"
+    }
+  ],
+  "products": [
+    {
+      "id": "11111111-1111-1111-1111-111111111111",
+      "storeID": "00000000-0000-0000-0000-000000000000",
+      "name": "Catch This",
+      "description": "This is product 1",
+      "price": 100,
+      "deleted": false,
+      "categories": [
+        "bricks",
+        "bigbrick"
+      ],
+      "images": [
+        "logo.png",
+        "logo.png",
+        "logo.png",
+        "logo.png",
+        "logo.png",
+        "logo.png"
+      ],
+      "stock": 10
+    },
+    {
+      "id": "22222222-2222-2222-2222-222222222222",
+      "storeID": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+      "name": "Product 2",
+      "description": "This is product 2",
+      "price": 200,
+      "deleted": true,
+      "categories": [
+        "notbricks"
+      ],
+      "images": [
+        "image3.jpg"
+      ],
+      "stock": 5
+    }
+  ],
+  "reviews": [
+    {
+      "id": "11111111-1111-1111-1111-111111111111",
+      "productID": "11111111-1111-1111-1111-111111111111",
+      "storeID": "00000000-0000-0000-0000-000000000000",
+      "userID": "11111111-1111-1111-1111-111111111111",
+      "rating": 5,
+      "comment": "Great product!"
+    },
+    {
+      "id": "22222222-2222-2222-2222-222222222222",
+      "productID": "22222222-2222-2222-2222-222222222222",
+      "storeID": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+      "userID": "22222222-2222-2222-2222-222222222222",
+      "rating": 4,
+      "comment": "Good product"
+    }
+  ],
+  "orders": [
+    {
+      "id": "11111111-1111-1111-1111-111111111111",
+      "userID": "66666666-6666-6666-6666-666666666666",
+      "products": [
+        {
+          "productID": "22222222-2222-2222-2222-222222222222",
+          "storeID": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+          "quantity": 1,
+          "price": 200
+        }
+      ],
+      "address": "wahoooasdasdda",
+      "date": "2024-07-24T12:00:00.000Z",
+      "total": 400,
+      "status": "pending"
+    },
+    {
+      "id": "22222222-2222-2222-2222-222222222223",
+      "userID": "66666666-6666-6666-6666-666666666666",
+      "products": [],
+      "address": "wahoooasdasdda",
+      "date": "2024-07-25T12:00:00.000Z",
+      "total": 100,
+      "status": "shipped"
+    },
+    {
+      "id": "33333333-3333-3333-3333-333333333333",
+      "userID": "66666666-6666-6666-6666-666666666666",
+      "products": [
+        {
+          "productID": "22222222-2222-2222-2222-222222222222",
+          "storeID": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+          "quantity": 3,
+          "price": 200
+        }
+      ],
+      "address": "wahoooasdasdda",
+      "date": "2024-07-26T12:00:00.000Z",
+      "total": 600,
+      "status": "delivered"
+    }
+  ]
+}

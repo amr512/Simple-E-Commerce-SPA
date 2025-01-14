@@ -1,0 +1,165 @@
+<html>
+  <head>
+    <title>Store - Home</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module" src="/scripts/constants.js"></script>
+    <script type="module" src="/scripts/helpers.js"></script>
+    <script type="module" src="/scripts/seller.js"></script>
+    <link href="/styles/main.css" rel="stylesheet" />
+    <link href="/styles/form.css" rel="stylesheet" />
+    <link href="/styles/admin.css" rel="stylesheet" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="nav-container">
+      <div class="navbar" id="navbar">
+        <div class="logo" id="logo">
+          <a href="/index.html">
+            <img class="nav-logo" src="../images/logo.png" />
+          </a>
+        </div>
+        <!-- <a class="nav-link" id="home" href="/index.html"><i class="fa-solid fa-house"></i> Home</a> -->
+        <div class="nav-links" id="nav-links"></div>
+        <div class="search">
+          <input id="search" type="text" placeholder="Search..." />
+          <i class="fa-solid fa-magnifying-glass" class="search-button"></i>
+        </div>
+        <div class="icons" id="icons">
+          <a href="/pages/login.html"><i class="fa-solid fa-user"></i></a>
+          <i class="fa-solid fa-cart-shopping"></i>
+        </div>
+      </div>
+    </div>
+    <div class="content" id="content">
+      <div
+        class="heading-section flex-row space-between align-center full-width margin-auto"
+      >
+        <div>
+          <h2 id="greeting">Good morning, {{name}}!</h2>
+          <p id="email"></p>
+        </div>
+      </div>
+      <div class="deleted-check">
+        <input type="checkbox" checked id="includeDeleted" />
+        <label for="includeDeleted">&zwj; Include Deleted</label>
+      </div>
+      <div class="tab">
+        <input class="tablinks" type="button" value="Orders" />
+        <input class="tablinks" type="button" value="Products" />
+      </div>
+      <div id="page-controls" class="flex-row stretch">
+        <input type="button" id="previous" value="Previous" />
+        <input type="number" id="page-number" value="1" />
+        <input type="button" id="goto" value="Go" />
+        <input type="button" id="next" value="Next">
+      </div>
+      <div class="tabs">
+        <div id="orders" class="tabcontent hidden">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Products</th>
+                <th>Address</th>
+                <th>Time</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <!-- drop down menu -->
+            <tbody id="orders-table-body"></tbody>
+          </table>
+          <form id="selected-order">
+            <div id="order-fields">
+              
+            </div>
+          </form>
+        </div>
+        
+        <div id="products" class="tabcontent hidden">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Categories</th>
+                <th>Description</th>
+                <th>Images</th>
+                <th>Selected</th>
+              </tr>
+            </thead>
+            <tbody id="products-table-body"></tbody>
+          </table>
+          <form id="selected-product">
+            <div id="product-fields">
+              
+            </div>
+          </form>
+        </div>
+      </div>
+        
+        <div class="margin-auto hidden">
+          <form id="info" action="" class="">
+            <div>
+              <p>Name</p>
+              <div>
+                <input type="text" name="name" id="name" />
+              </div>
+            </div>
+            <div>
+              <p>Phone</p>
+              <div>
+                <input type="tel" name="phone" id="phone" />
+              </div>
+            </div>
+            <div>
+              <p>Address</p>
+              <div>
+                <input type="text" name="address" id="address" />
+              </div>
+          </div>
+          <div class="flex-row space-between full-width">
+            <input type="reset" value="Cancel" />
+            <input type="submit" value="Save" />
+          </div>
+        </form>
+      </div>
+      <div class="margin-auto hidden">
+        <form id="password" action="" class="">
+          <div class="text-center">
+            <p id="pass-error" class="error tex-center"></p>
+          </div>
+          <div>
+            <p>Old Password</p>
+            <div>
+              <input type="password" name="oldPassword" id="oldPassword" />
+            </div>
+          </div>
+          <div>
+            <p>New Password</p>
+            <div>
+              <input type="password" name="newPassword" id="newPassword" />
+            </div>
+          </div>
+          <div>
+            <p>Confirm New Password</p>
+            <div>
+              <input
+                type="password"
+                name="confirmNewPassword"
+                id="confirmNewPassword"
+              />
+            </div>
+          </div>
+          <div class="flex-row space-between full-width">
+            <input type="reset" value="Cancel" />
+            <input type="submit" value="Reset" />
+          </div>
+        </form>
+        <pre></pre>
+      </div>
+    </div>
+  </body>
+</html>

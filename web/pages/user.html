@@ -1,12 +1,131 @@
 <html>
-    <head>
-        <title>Shop - User</title>
-        <script src=""></script>
-        <link href="" rel="stylesheet" ></link>
-    </head>
-    <body>
-        <div>
-            userrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
+  <head>
+    <title>Store - Home</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module" src="/scripts/constants.js"></script>
+    <script type="module" src="/scripts/helpers.js"></script>
+    <script type="module" src="/scripts/user.js"></script>
+    <link href="/styles/main.css" rel="stylesheet" />
+    <link href="/styles/form.css" rel="stylesheet" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- <i class="fa-solid fa-spinner-third gray fa-spin fa-spin-reverse"></i> -->
+    <div class="nav-container">
+      <div class="navbar" id="navbar">
+        <div class="logo" id="logo">
+          <a href="/index.html">
+            <img class="nav-logo" src="../images/logo.png" />
+          </a>
         </div>
-    </body>
+        <!-- <a class="nav-link" id="home" href="/index.html"><i class="fa-solid fa-house"></i> Home</a> -->
+        <div class="nav-links" id="nav-links"></div>
+        <div class="search">
+          <input id="search" type="text" placeholder="Search..." />
+          <i class="fa-solid fa-magnifying-glass" class="search-button"></i>
+        </div>
+        <div class="icons" id="icons">
+          <!-- <a href="/pages/login.html"><i class="fa-solid fa-user"></i></a> -->
+          <i class="fa-solid fa-cart-shopping"></i>
+        </div>
+      </div>
+    </div>
+    <div class="b"></div>
+    <div class="content" id="content">
+      <div
+        class="heading-section flex-row space-between align-center full-width margin-auto"
+      >
+        <div>
+          <h2 id="greeting">Good morning, {{name}}!</h2>
+          <p id="email"></p>
+        </div>
+        <div
+          id="create-store"
+          class="flex-column justify-center align-center hidden"
+        >
+          <input id="store-name" type="text" placeholder="Store Name" />
+          <input id="convert" type="button" value="Create seller account" />
+        </div>
+        <div id="store" class="flex-column justify-center align-center hidden">
+          <a href="/pages/seller.html">
+            <input id="seller" type="button" value="Go to Seller Portal" />
+          </a>
+        </div>
+        <div
+          id="admin-portal"
+          class="flex-column justify-center align-center hidden"
+        >
+          <a href="/pages/admin.html">
+            <input id="admin" type="button" value="Go to Admin Portal" />
+          </a>
+        </div>
+      </div>
+      <div class="margin-auto">
+        <form id="info" action="" class="">
+          <div>
+            <p>Name</p>
+            <div>
+              <input type="text" name="name" id="name" />
+            </div>
+          </div>
+          <div>
+            <p>Phone</p>
+            <div>
+              <input type="tel" name="phone" id="phone" />
+            </div>
+          </div>
+          <div>
+            <p>Address</p>
+            <div>
+              <input type="text" name="address" id="address" />
+            </div>
+          </div>
+          <div class="flex-row space-between full-width">
+            <input type="reset" value="Cancel" />
+            <input type="submit" value="Save" />
+          </div>
+        </form>
+      </div>
+      <div class="margin-auto">
+        <form id="password" action="" class="">
+          <div class="text-center">
+            <p id="pass-error" class="error tex-center"></p>
+          </div>
+          <div>
+            <p>Old Password</p>
+            <div>
+              <input type="password" name="oldPassword" id="oldPassword" />
+            </div>
+          </div>
+          <div>
+            <p>New Password</p>
+            <div>
+              <input type="password" name="newPassword" id="newPassword" />
+            </div>
+          </div>
+          <div>
+            <p>Confirm New Password</p>
+            <div>
+              <input
+              type="password"
+              name="confirmNewPassword"
+              id="confirmNewPassword"
+              />
+            </div>
+          </div>
+          <div class="flex-row space-between full-width">
+            <input type="reset" value="Cancel" />
+            <input type="submit" value="Reset" />
+          </div>
+        </form>
+        <pre></pre>
+      </div>
+      <div class="align-self-end">
+        <input id="logout" type="button" value="Logout" />
+      </div>
+    </div>
+  </body>
 </html>

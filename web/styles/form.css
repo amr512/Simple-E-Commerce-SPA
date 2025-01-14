@@ -1,0 +1,24 @@
+.heading-section{
+    border-bottom: 1px solid lightgray;
+    padding: 0px 10px;
+}
+
+/* *{
+     border: 1px solid black; 
+} */
+form{
+    margin: 10px;
+}
+form > div{
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+form > div > label{
+    align-self: flex-start;
+    
+}
+[type=text],[type=tel],[type=password],[type=number],[type=email]{
+    padding: 5px;
+}
