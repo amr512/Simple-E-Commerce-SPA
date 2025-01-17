@@ -1,41 +1,43 @@
+import { validateInput, requests, errorAlert, DocElement, successAlert } from "./helpers.js";
 window.addEventListener("load", () => {
-  try{
-    if(JSON.parse(localStorage.getItem("currentuser")).id)
-      {
-        window.location.assign("user.html")
-      }
-    }catch{
-
+  try {
+    if (JSON.parse(localStorage.getItem("currentuser")).id) {
+      window.location.assign("user.html");
     }
-  document
-    .getElementsByTagName("form")[0]
-    .addEventListener("submit", async (e) => {
-      e.preventDefault();
-      document.getElementById("error").innerText = "";
-      let data = new FormData(e.target);
-      console.log(data)
-      // let user = await (await fetch(`http://localhost:5500/users?email=${data.get("email").trim().toLowerCase()}&password=${data.get("password").trim()}`)).json()
-      //         console.log(user)
-      let user;
-        let res = await fetch("http://localhost:5500/users/auth", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            email: data.get("email").trim().toLowerCase(),
-            password: data.get("password").trim(),
-          }),
-        }
-      )
-      if (res.status == 200) {
-        user = await res.json();
-        localStorage.setItem("currentuser", JSON.stringify(user));
-        window.location.assign("user.html");
-      } else {
-        document.getElementById("error").innerText = (await res.json()).message;
-        document.getElementById("password").value = "";
-      }
+  } catch {}
+  const form = new DocElement("-form");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    
+    let data = new FormData(e.target);
+    let err = [];
+    data.forEach((value, key) => {
+      err.push(validateInput(value, key));
     });
+    err = err.filter((e) => e.length > 0);
+    if (err.length > 0) {
+      errorAlert(err.join("\n&\n"));
+      return;
+    }
+
+    let user;
+    let res = await requests.POST("http://localhost:5500/users/auth", {
+      email: data.get("email").trim().toLowerCase(),
+      password: data.get("password").trim(),
+    });
+    console.log(res)
+    if (res.status == 200) {
+      user = await res.json();
+      localStorage.setItem("currentuser", JSON.stringify(user));
+      window.location.assign("user.html");
+    } else {
+      errorAlert((await res.json()).message)
+    }
+  });
+
+  const forgot = new DocElement("#forgot")
+  console.log(forgot.element)
+  forgot.addEventListener("click", () => {
+    successAlert("too bad, make a new account")
+  });
 });

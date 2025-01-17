@@ -2,7 +2,6 @@
   "typeAcquisition": {
     "include": [
       "./scripts/*.js",
-    
   ]
   }
 }

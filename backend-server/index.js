@@ -2,7 +2,7 @@ import { JSONFilePreset, JSONFileSync, JSONFileSyncPreset } from "lowdb/node";
 import e from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { NIL, v4 as newUUID, stringify as UUIDString } from "uuid";
+import { NIL, v4 as newUUID } from "uuid";
 import cookieParser from "cookie-parser";
 import fs from "fs";
 
@@ -35,7 +35,8 @@ const db = await JSONFilePreset("./db.json", {
 await db.read();
 const { users, stores, products, reviews, orders } = db.data;
 // #endregion
-
+stores.forEach(ord=>ord.approved = true)
+await db.write()
 // #region helper functions
 
 const addUser = async (data) => {
@@ -49,23 +50,52 @@ const addUser = async (data) => {
   }
 };
 
-const addStore = async (data) => {
-  data.id = newUUID();
-  if (
-    !(
-      stores.find((store) => store.name === data.name) ||
-      stores.find((store) => store.ownerID === data.ownerID)
-    ) &&
-    users.find((user) => user.id === data.ownerID)
-  ) {
-    stores.push(data);
-    users[users.findIndex((user) => user.id === data.ownerID)].storeID =
-      data.id;
-    await db.write();
-    return true;
-  } else {
-    return false;
+const addStore = async (data, user, res) => {
+  const store = {
+    id: newUUID(),
+    ownerID: data.user,
+    name: data.name,
+  };
+
+  const storeExists = stores.find((_store) => _store.ownerID === store.ownerID);
+  if (storeExists?.name === store.name) {
+    res.status(400).send({ message: "store already exists" });
+    return;
   }
+  if (storeExists || user.storeID) {
+    res.status(400).send({ message: "user already has a store" });
+    return;
+  }
+  if (!user) {
+    res.status(400).send({ message: "user does not exist" });
+    return;
+  }
+  stores.push(store);
+  user.storeID = store.id;
+  await db.write();
+  res.status(200).send(store);
+};
+
+const checkAuthorized = (req) => {
+  if (users.find((user) => user.id === req.signedCookies["user"]).admin) return true;
+  if (req.signedCookies["user"] && req.signedCookies["user"] === req.params?.id)
+    return true;
+  return false;
+};
+
+const requireOwner = (req) => {
+  if (req.signedCookies["user"] === NIL) return true;
+  return false;
+}
+
+const unauthorizedError = (res) =>
+  res.status(401).send({ error: "Unauthorized" });
+
+const removeDeleted = (arr) => {
+  return arr.filter((item) => !item.deleted);
+};
+const removeUnapproved = (arr) => {
+  return arr.filter((item) => item.approved);
 };
 
 Object.prototype.removeEmpty = function () {
@@ -92,31 +122,24 @@ app.get("/images/:name", (req, res) => {
 });
 app.get("/users/:id", (req, res) => {
   const user = users.find((user) => user.id === req.params.id);
-  if (
-    req.signedCookies["user"] != NIL &&
-    req.signedCookies["user"] != req.params.id
-  ) {
-    res.status(200).send({name:user.name});
-    return;
-  }
-  if (user?.deleted && req.signedCookies["user"] != NIL) {
-    res.status(401).send({ error: "Unauthorized" });
+  const authorized = checkAuthorized(req);
+  if (!authorized) {
+    unauthorizedError(res);
     return;
   }
   res.status(200).send(user);
 });
 app.get("/users/", (req, res) => {
-  if (req.signedCookies["user"] != NIL) {
-    res.status(401).send({ error: "Unauthorized" });
+  if (!checkAuthorized(req)) {
+    unauthorizedError(res);
     return;
   }
 
   const includeDeleted = req.query.includeDeleted
     ? req.query.includeDeleted === "true"
-    : false;
-  const filteredUsers = includeDeleted
-    ? users
-    : users.filter((user) => !user?.deleted);
+    : //set to false if unset or false
+      false;
+  const filteredUsers = includeDeleted ? users : removeDeleted(users);
 
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 100;
@@ -136,15 +159,41 @@ app.get("/products/:id", (req, res) => {
 });
 app.get("/stores/:id", (req, res) => {
   const store = stores.find((store) => store.id === req.params.id);
-  
+
   res.status(200).send(store);
 });
-app.get("/products/", (req, res) => {
+
+app.get("/stores/", (req, res) => {
+  const includeDeleted = req.query.includeDeleted
+    ? req.query.includeDeleted === "true"
+    : false;
+  const filteredStores = includeDeleted ? stores : removeUnapproved(stores);
+
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 100;
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
-  const paginatedProducts = products.slice(startIndex, endIndex);
+  const paginatedStores = filteredStores.slice(startIndex, endIndex);
+  if (paginatedStores.length == 0) {
+    res.status(404).send({ error: `page ${page} is out of range` });
+    return;
+  }
+  res.status(200).send(paginatedStores);
+
+})
+
+app.get("/products/", (req, res) => {
+  const includeDeleted = req.query.includeDeleted
+  ? req.query.includeDeleted === "true"
+  : //set to false if unset or false
+    false;
+const fliteredProducts = includeDeleted ? products : removeDeleted(removeUnapproved(products));
+console.log(fliteredProducts)
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 100;
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const paginatedProducts = fliteredProducts.slice(startIndex, endIndex);
   if (paginatedProducts.length == 0) {
     res.status(404).send({ error: `page ${page} is out of range` });
     return;
@@ -157,10 +206,6 @@ app.get("/reviews/:id", (req, res) => {
 });
 
 app.get("/orders/", (req, res) => {
-  if (req.signedCookies["user"] != NIL) {
-    res.status(401).send({ error: "Unauthorized" });
-    return;
-  }
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 100;
   const startIndex = (page - 1) * limit;
@@ -174,37 +219,20 @@ app.get("/orders/", (req, res) => {
 });
 app.get("/orders/:id", (req, res) => {
   const order = orders.find((order) => order.id === req.params.id);
-  if (
-    req.signedCookies["user"] != NIL &&
-    req.signedCookies["user"] != order.userID
-  ) {
-    res.status(401).send({ error: "Unauthorized" });
-    return;
-  }
   res.status(200).send(order);
 });
 app.get("/store/orders/:storeid", (req, res) => {
   // console.log(req.params.storeid)
-  const _order = [...orders.filter((order) =>
-    order.products = order.products.filter((product) => product.storeID == req.params.storeid))]
-    // .map(
-    //   order=> (order
-    // )
-    
-  
-  // console.log(req.signedCookies["user"])
-  // console.log(stores.find((store) => store.id == req.params.storeid));
-  
-  if (
-    req.signedCookies["user"] != NIL &&
-    req.signedCookies["user"] != stores.find((store) => store.id == req.params.storeid).ownerID
-  ) {
-    res.status(401).send({ error: "Unauthorized" });
-    return;
-  }
+  const _order = [
+    ...orders.filter(
+      (order) =>
+        (order.products = order.products.filter(
+          (product) => product.storeID == req.params.storeid
+        ))
+    ),
+  ];
   res.status(200).send(_order);
 });
-
 
 // #endregion
 // #region post routes
@@ -219,9 +247,13 @@ app.post("/users/auth", async (req, res) => {
         user.email === req.body.email && user.password === req.body.password
     ),
   };
-  console.log(user)
-  user.password = undefined;
-  if (user) {
+  if (user.deleted) {
+    res.status(401).send({ message: "Account deleted/suspended" });
+    return;
+  }
+
+  if (Object.keys(user).length > 0) {
+    user.password = undefined;
     res
       .cookie("user", user.id, {
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
@@ -249,26 +281,34 @@ app.post("/users/logout", async (req, res) => {
     .send({ message: "logged out successfully" });
 });
 
+app.post("/users/create-store/", async (req, res) => {
+  const data = req.body;
+  console.log(data);
+  const user = users.find((user) => user.id === req.signedCookies["user"]);
+  if (user) {
+    await addStore(data, user, res);
+  } else {
+    res.status(401).send({ message: "Unauthorized" });
+  }
+});
+
 //#endregion
 //#region put routes
 app.put("/users/:id", async (req, res) => {
   // console.log(req.body)
-  if (
-    req.signedCookies["user"] == req.params.id ||
-    req.signedCookies["user"] == NIL
-  ) {
-    const user = users.find((user) => user.id === req.params.id);
-    if (user) {
-      const data = req.body.removeEmpty();
-      console.log(data);
-      for (let key in data) {
-        user[key] = data[key];
-      }
-      await db.write();
-      res.status(200).send(user);
+  const user = users.find((user) => user.id === req.params.id);
+  if (user) {
+    const data = req.body; //.removeEmpty();
+  if(user.admin != data.admin && !requireOwner(req)){
+      unauthorizedError(res)
+      return
+  }
+    console.log(data);
+    for (let key in data) {
+      user[key] = data[key];
     }
-  } else {
-    res.status(401).send({ message: "Unauthorized" });
+    await db.write();
+    res.status(200).send(user);
   }
 });
 app.put("/users/password/:id", async (req, res) => {
@@ -283,10 +323,8 @@ app.put("/users/password/:id", async (req, res) => {
 });
 app.put("/products/:id", async (req, res) => {
   const product = products.find((product) => product.id === req.params.id);
-  console.log(product)
-  console.log(req.body)
   if (product) {
-    const data = req.body.removeEmpty();
+    const data = req.body; //.removeEmpty();
     for (let key in data) {
       product[key] = data[key];
     }
@@ -298,15 +336,8 @@ app.put("/products/:id", async (req, res) => {
 });
 app.put("/stores/:id", async (req, res) => {
   const store = stores.find((store) => store.id === req.params.id);
-  if (
-    req.signedCookies["user"] != NIL &&
-    req.signedCookies["user"] != store.ownerID
-  ) {
-    res.status(401).send({ message: "Unauthorized" });
-    return;
-  }
   if (store) {
-    const data = req.body.removeEmpty();
+    const data = req.body; //.removeEmpty();
     for (let key in data) {
       store[key] = data[key];
     }
@@ -319,7 +350,7 @@ app.put("/stores/:id", async (req, res) => {
 app.put("/reviews/:id", async (req, res) => {
   const review = reviews.find((review) => review.id === req.params.id);
   if (review) {
-    const data = req.body.removeEmpty();
+    const data = req.body; //.removeEmpty();
     for (let key in data) {
       review[key] = data[key];
     }
@@ -331,28 +362,19 @@ app.put("/reviews/:id", async (req, res) => {
 });
 app.put("/orders/:id", async (req, res) => {
   const order = orders.find((order) => order.id === req.params.id);
-  // if (
-  //   req.signedCookies["user"] != NIL &&
-  //   req.signedCookies["user"] != order.userID
-  // ) {
-  //   res.status(401).send({ message: "Unauthorized" });
-  //   return;
-  // }
   if (order) {
-    const data = req.body.removeEmpty();
+    const data = req.body;
     for (let key in data) {
       order[key] = data[key];
     }
     await db.write();
     res.status(200).send(order);
   }
-  // } else {
-  //   res.status(404).send({ message: "order not found" });
-  // }
 });
 
 //#endregion
 //#region delete routes
+
 //#endregion
 // #endregion express routes
 

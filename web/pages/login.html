@@ -2,7 +2,6 @@
   <head>
     <title>Store - Login</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="module" src="/scripts/constants.js"></script>
     <script type="module" src="/scripts/helpers.js"></script>
     <script type="module" src="/scripts/login.js"></script>
     <link href="/styles/main.css" rel="stylesheet" />
@@ -18,7 +17,7 @@
       <div class="navbar" id="navbar">
         <div class="logo" id="logo">
           <a href="/index.html">
-            <img class="nav-logo" src="../images/logo.png" />
+            <img class="nav-logo" src="/images/logo.png" />
           </a>
         </div>
         <!-- <a class="nav-link" id="home" href="/index.html"><i class="fa-solid fa-house"></i> Home</a> -->
@@ -45,7 +44,7 @@
           <label for="password">Password</label>
           <input id="password" type="password" name="password" />
         </div>
-        <a href="#">Forgot Password?</a>
+        <a href="#" id="forgot">Forgot Password?</a>
         <div>
           <input type="submit" value="Log In" />
         </div>

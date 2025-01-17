@@ -22,6 +22,7 @@
       "seller": false,
       "storeID": null,
       "deleted": true,
+      "admin": false,
       "phone": "0123456789",
       "address": "wahoooasdasdda"
     },
@@ -33,7 +34,8 @@
       "orderIDs": [],
       "seller": true,
       "storeID": "ffffffff-ffff-ffff-ffff-ffffffffffff",
-      "deleted": false,
+      "deleted": true,
+      "admin": false,
       "phone": "0123456789",
       "address": "wahoooasdasdda"
     },
@@ -46,6 +48,7 @@
       "seller": true,
       "storeID": null,
       "deleted": true,
+      "admin": false,
       "phone": "0123456789",
       "address": "wahoooasdasdda"
     },
@@ -57,7 +60,8 @@
       "orderIDs": [],
       "seller": false,
       "storeID": null,
-      "deleted": false,
+      "deleted": true,
+      "admin": false,
       "phone": "0123456789",
       "address": "wahoooasdasdda"
     },
@@ -70,6 +74,7 @@
       "seller": false,
       "storeID": null,
       "deleted": false,
+      "admin": false,
       "phone": "0123456789",
       "address": "wahoooasdasdda"
     },
@@ -84,8 +89,9 @@
         "56"
       ],
       "seller": false,
-      "storeID": null,
+      "storeID": "70d7bbef-ef1d-48e5-8497-94bbcee6c1a2",
       "deleted": false,
+      "admin": false,
       "phone": "0123456789",
       "address": "wahoooasdasdda"
     },
@@ -98,6 +104,7 @@
       "seller": false,
       "storeID": null,
       "deleted": true,
+      "admin": false,
       "phone": "0123456789",
       "address": "wahoooasdasdda"
     },
@@ -110,6 +117,7 @@
       "seller": false,
       "storeID": null,
       "deleted": false,
+      "admin": false,
       "phone": "0123456789",
       "address": "wahoooasdasdda"
     },
@@ -122,6 +130,7 @@
       "seller": false,
       "storeID": null,
       "deleted": true,
+      "admin": false,
       "phone": "0123456789",
       "address": "wahoooasdasdda"
     },
@@ -134,6 +143,7 @@
       "seller": true,
       "storeID": null,
       "deleted": false,
+      "admin": false,
       "phone": "0123456789",
       "address": "wahoooasdasdda"
     },
@@ -146,6 +156,7 @@
       "seller": false,
       "storeID": null,
       "deleted": false,
+      "admin": false,
       "phone": "0123456789",
       "address": "wahoooasdasdda"
     }
@@ -154,12 +165,14 @@
     {
       "id": "00000000-0000-0000-0000-000000000000",
       "ownerID": "00000000-0000-0000-0000-000000000000",
-      "name": "bricks.store"
+      "name": "bricks.store",
+      "approved": true
     },
     {
       "id": "ffffffff-ffff-ffff-ffff-ffffffffffff",
       "ownerID": "22222222-2222-2222-2222-222222222222",
-      "name": "testStore"
+      "name": "testStore",
+      "approved": true
     }
   ],
   "products": [
@@ -179,10 +192,12 @@
         "logo.png",
         "logo.png",
         "logo.png",
+        "chrispratt.jpg",
         "logo.png",
         "logo.png"
       ],
-      "stock": 10
+      "stock": 10,
+      "approved": true
     },
     {
       "id": "22222222-2222-2222-2222-222222222222",
@@ -197,7 +212,41 @@
       "images": [
         "image3.jpg"
       ],
-      "stock": 5
+      "stock": 5,
+      "approved": true
+    },
+    {
+      "id": "33333333-3333-3333-3333-333333333333",
+      "storeID": "00000000-0000-0000-0000-000000000000",
+      "name": "Megatron",
+      "description": "The whole robot, just take him please he's taking up too much space in the warehouse",
+      "price": "FREE",
+      "deleted": false,
+      "categories": [
+        "notbricks"
+      ],
+      "images": [
+        "megatron.webp"
+      ],
+      "stock": 1,
+      "approved": true
+    },
+    {
+      "id": "44444444-4444-4444-4444-444444444444",
+      "storeID": "00000000-0000-0000-0000-000000000000",
+      "name": "Chris Pratt",
+      "description": "Spent HOURS of his life stomping... KOOPAS",
+      "price": 59.99,
+      "deleted": false,
+      "categories": [
+        "notbricks",
+        "KOOPAS"
+      ],
+      "images": [
+        "chrispratt.jpg"
+      ],
+      "stock": 1,
+      "approved": true
     }
   ],
   "reviews": [
@@ -233,7 +282,7 @@
       "address": "wahoooasdasdda",
       "date": "2024-07-24T12:00:00.000Z",
       "total": 400,
-      "status": "pending"
+      "status": "delivered"
     },
     {
       "id": "22222222-2222-2222-2222-222222222223",

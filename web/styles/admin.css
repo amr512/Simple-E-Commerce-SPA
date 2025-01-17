@@ -1,11 +1,13 @@
 /* tabs styles */
 /* tabs & tablinks */
-.deleted-check{
+.deleted-check {
   display: flex;
   /* align to the left */
   margin: 5px;
 }
-.tab {
+
+.tab,
+#page-controls {
   overflow: hidden;
   border: 1px solid #ccc;
   background-color: #f1f1f1;
@@ -14,9 +16,21 @@
   justify-content: stretch;
   flex-direction: row;
 }
-
+#table-container {
+  display: flex;
+  justify-content: stretch;
+  width: 100%;
+}
+/* {
+  border: 1px solid #ccc;
+  border-bottom: none;
+  max-width: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+} */
 .tab input {
-  flex:1 1 auto;
+  flex: 1 1 auto;
   cursor: pointer;
   margin: 0;
   border-radius: 0px;
@@ -39,28 +53,43 @@
   border-top: none;
   width: 100%;
 }
-
-table{
-  
-  border-collapse: collapse;
-  width: 100%;
+.content {
+  overflow: auto;
 }
 
-th, td {
+.table-legend{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+table {
+  border-collapse: collapse;
+  flex: 1 1 100%;
+  max-width: 100%;
+}
+
+th,
+td {
   border: 1px solid black;
   padding: 8px;
-  text-align: left;
-  max-width: 20vw;
-  /* break lines when space is not enough */
-  white-space: pre-wrap;  
-  word-break: break-word;
+  /* max-width: 20vw; */
+  text-align: center;
+  /* truncate text */  
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* white-space: nowrap; */
 }
-td>img{
-  width: 150px;
+td > img {
+  /* width: 150px; */
+  max-width: 100%;
+  max-height: 100px;
 }
 
-th {
-  background-color: #f2f2f2;
+tr {
+  max-height: 10rem;
 }
 
 tr:nth-child(even) {
@@ -69,11 +98,18 @@ tr:nth-child(even) {
 
 tr:hover {
   background-color: #ddd;
+  cursor: pointer;
+}
+tr.active {
+  background-color: #adffeb;
+}
+th {
+  background-color: #eeeeee;
+  /* border: 123px solid black; */
 }
 
-.table-responsive {
-  overflow-x: auto;
-}
+/* .table-responsive {
+} */
 
 .hidden {
   display: none;
@@ -81,46 +117,47 @@ tr:hover {
 
 .updated {
   color: blue;
-  
 }
 .deleted {
   text-decoration: line-through;
   color: gray;
 }
-
-.seller-row * {
+.unapproved{
+  border:2px inset red;
+}
+.seller{
   color: green;
 }
 
-.admin-row * {
-  color:rgb(8, 0, 255);
+.admin{
+  color: rgb(8, 0, 255);
 }
-.progress{
+.progress {
   cursor: progress;
   pointer-events: none;
 }
-form{
+form {
   display: flex;
   flex-direction: column;
 }
-form > div{
+form > div {
   display: flex;
-  flex-flow: column wrap;
+  flex-flow: row wrap;
   width: fit-content;
   justify-content: space-evenly;
   margin: auto;
 }
-form > div>div{
+form > div > div {
   flex: 1 1 30%;
+  /* max-width: 33%; */
   padding-inline: 2px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  /* align-items: flex-start; */
+  text-align: center;
 }
-#page-controls{
-    border: 1px solid #ccc;
-    border-bottom: none;
-  width: 100%;
-}
+
 /* form > div > div *{
   flex-direction: column;
   display: block;
