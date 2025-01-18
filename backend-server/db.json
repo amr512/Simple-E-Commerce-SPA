@@ -21,8 +21,8 @@
       "orderIDs": [],
       "seller": false,
       "storeID": null,
-      "deleted": true,
-      "admin": false,
+      "deleted": false,
+      "admin": true,
       "phone": "0123456789",
       "address": "wahoooasdasdda"
     },
@@ -46,8 +46,8 @@
       "name": "User3",
       "orderIDs": [],
       "seller": true,
-      "storeID": null,
-      "deleted": true,
+      "storeID": "15724a98-124a-4733-97d8-f7f5e8f78ea8",
+      "deleted": false,
       "admin": false,
       "phone": "0123456789",
       "address": "wahoooasdasdda"
@@ -58,9 +58,9 @@
       "password": "user123",
       "name": "User4",
       "orderIDs": [],
-      "seller": false,
-      "storeID": null,
-      "deleted": true,
+      "seller": true,
+      "storeID": "572577ff-9df4-415c-83c3-78ceeb42cb00",
+      "deleted": false,
       "admin": false,
       "phone": "0123456789",
       "address": "wahoooasdasdda"
@@ -173,6 +173,18 @@
       "ownerID": "22222222-2222-2222-2222-222222222222",
       "name": "testStore",
       "approved": true
+    },
+    {
+      "id": "15724a98-124a-4733-97d8-f7f5e8f78ea8",
+      "ownerID": "33333333-3333-3333-3333-333333333333",
+      "name": "The Drink",
+      "approved": false
+    },
+    {
+      "id": "572577ff-9df4-415c-83c3-78ceeb42cb00",
+      "ownerID": "44444444-4444-4444-4444-444444444444",
+      "name": "GreatestStoreForUser4",
+      "approved": false
     }
   ],
   "products": [
@@ -205,7 +217,7 @@
       "name": "Product 2",
       "description": "This is product 2",
       "price": 200,
-      "deleted": true,
+      "deleted": false,
       "categories": [
         "notbricks"
       ],
@@ -213,20 +225,21 @@
         "image3.jpg"
       ],
       "stock": 5,
-      "approved": true
+      "approved": false
     },
     {
       "id": "33333333-3333-3333-3333-333333333333",
       "storeID": "00000000-0000-0000-0000-000000000000",
       "name": "Megatron",
       "description": "The whole robot, just take him please he's taking up too much space in the warehouse",
-      "price": "FREE",
+      "price": 0,
       "deleted": false,
       "categories": [
         "notbricks"
       ],
       "images": [
-        "megatron.webp"
+        "megatron.webp",
+        "logo.png"
       ],
       "stock": 1,
       "approved": true
@@ -271,14 +284,7 @@
     {
       "id": "11111111-1111-1111-1111-111111111111",
       "userID": "66666666-6666-6666-6666-666666666666",
-      "products": [
-        {
-          "productID": "22222222-2222-2222-2222-222222222222",
-          "storeID": "ffffffff-ffff-ffff-ffff-ffffffffffff",
-          "quantity": 1,
-          "price": 200
-        }
-      ],
+      "products": [],
       "address": "wahoooasdasdda",
       "date": "2024-07-24T12:00:00.000Z",
       "total": 400,
@@ -291,19 +297,12 @@
       "address": "wahoooasdasdda",
       "date": "2024-07-25T12:00:00.000Z",
       "total": 100,
-      "status": "shipped"
+      "status": "pending"
     },
     {
       "id": "33333333-3333-3333-3333-333333333333",
       "userID": "66666666-6666-6666-6666-666666666666",
-      "products": [
-        {
-          "productID": "22222222-2222-2222-2222-222222222222",
-          "storeID": "ffffffff-ffff-ffff-ffff-ffffffffffff",
-          "quantity": 3,
-          "price": 200
-        }
-      ],
+      "products": [],
       "address": "wahoooasdasdda",
       "date": "2024-07-26T12:00:00.000Z",
       "total": 600,

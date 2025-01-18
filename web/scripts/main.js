@@ -1,29 +1,40 @@
-import { DocElement } from "./helpers.js";
-import { createNavbar, createTable } from "./components.js";
+import { DocElement, requests } from "./helpers.js";
+import { createNavbar, createTable, createProductCard } from "./components.js";
 
-window.addEventListener("load", () => {
-  const container = document.getElementById("content");
+window.addEventListener("load", async () => {
+  const container = new DocElement("#content");
   const navbar = createNavbar("home");
   document.body.prepend(navbar.element);
 
-  const content = new DocElement(".content");
-  content.append(
-    createTable([
-      { real: "shit", goes: "jhe345re", number: 2, id: "ideeznuts" },
-      { real: "s3453hit", goes: "jhe45re", number: 552 },
-      { real: "shit", goes: "jh666ere", number: 266 },
-      { real: "sh3453it", goes: "jh43ere", number: 25 },
-      { real: "453shit", goes: "jhere", number: 2345 },
-      { real: "shit", goes: "j35here", number: 234 },
-    ])
-  );
-  Array.from(
-    content.element.children[0]
-    .children).forEach(child => {
-    child
-    .addEventListener("click",e=>{
-      alert(e.currentTarget.id)
-    })
+  const products = (await (
+    await requests.GET(`http://localhost:5500/products`)
+  ).json()).filter(prod=>prod.stock>0);
+  products.forEach(async (prod) => {
+    (await createProductCard(prod)).appendTo("#cards");
+  });
+  products.forEach(async (prod) => {
+    (await createProductCard(prod)).appendTo("#cards");
+  });
+  products.forEach(async (prod) => {
+    (await createProductCard(prod)).appendTo("#cards");
+  });
+  products.forEach(async (prod) => {
+    (await createProductCard(prod)).appendTo("#cards");
+  });
+  products.forEach(async (prod) => {
+    (await createProductCard(prod)).appendTo("#cards");
+  });
+  products.forEach(async (prod) => {
+    (await createProductCard(prod)).appendTo("#cards");
+  });
+  products.forEach(async (prod) => {
+    (await createProductCard(prod)).appendTo("#cards");
+  });
+  products.forEach(async (prod) => {
+    (await createProductCard(prod)).appendTo("#cards");
+  });
+  products.forEach(async (prod) => {
+    (await createProductCard(prod)).appendTo("#cards");
   });
 
   // let loadedPage = "Home";

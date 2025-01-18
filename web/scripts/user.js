@@ -20,10 +20,11 @@ window.addEventListener("load", async () => {
   const adminPortal = new DocElement("#admin-portal");
   const storePortal = new DocElement("#store");
   const createStore = new DocElement("#create-store");
-  const admin = currentuser.id === "00000000-0000-0000-0000-000000000000";
+  const admin = currentuser.id === "00000000-0000-0000-0000-000000000000" || currentuser.admin;
   if (admin) {
     adminPortal.removeClass("hidden");
-  } else if (currentuser.seller) {
+  } 
+  if (currentuser.seller) {
     storePortal.removeClass("hidden");
   } else {
     createStore.removeClass("hidden");
@@ -107,7 +108,8 @@ window.addEventListener("load", async () => {
       user: currentuser.id,
       name: storeName,
     });
-    if(res==200){
+    console.log(res)
+    if(res.status==200){
       await successAlert(`Store ${storeName} created! Redirecting...`)
       window.location.assign("seller.html")
     }else{

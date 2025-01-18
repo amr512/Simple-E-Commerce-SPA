@@ -107,6 +107,9 @@ th {
   background-color: #eeeeee;
   /* border: 123px solid black; */
 }
+tr button{
+  border: 1px solid gray;
+}
 
 /* .table-responsive {
 } */

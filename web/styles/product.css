@@ -1,0 +1,19 @@
+.product-image{
+    width: 100%;
+    height: 40rem;
+    object-fit: contain;
+}
+.product-page{
+    width: 100%;
+}
+.product-controls{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.product-title-container{
+    display: flex;
+    justify-content: space-between;
+    
+}

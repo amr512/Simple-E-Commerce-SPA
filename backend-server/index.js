@@ -1,4 +1,4 @@
-import { JSONFilePreset, JSONFileSync, JSONFileSyncPreset } from "lowdb/node";
+import { JSONFilePreset } from "lowdb/node";
 import e from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -35,8 +35,8 @@ const db = await JSONFilePreset("./db.json", {
 await db.read();
 const { users, stores, products, reviews, orders } = db.data;
 // #endregion
-stores.forEach(ord=>ord.approved = true)
-await db.write()
+
+// await db.write()
 // #region helper functions
 
 const addUser = async (data) => {
@@ -55,29 +55,33 @@ const addStore = async (data, user, res) => {
     id: newUUID(),
     ownerID: data.user,
     name: data.name,
+    approved:false
   };
 
   const storeExists = stores.find((_store) => _store.ownerID === store.ownerID);
   if (storeExists?.name === store.name) {
     res.status(400).send({ message: "store already exists" });
-    return;
+    return false;
   }
   if (storeExists || user.storeID) {
     res.status(400).send({ message: "user already has a store" });
-    return;
+    return false;
   }
   if (!user) {
     res.status(400).send({ message: "user does not exist" });
-    return;
+    return false;
   }
   stores.push(store);
   user.storeID = store.id;
+  user.seller = true
   await db.write();
-  res.status(200).send(store);
+  return store
 };
 
 const checkAuthorized = (req) => {
-  if (users.find((user) => user.id === req.signedCookies["user"]).admin) return true;
+  console.log(req.signedCookies["user"]);
+  if (users.find((user) => user.id == req.signedCookies["user"]).admin)
+    return true;
   if (req.signedCookies["user"] && req.signedCookies["user"] === req.params?.id)
     return true;
   return false;
@@ -86,7 +90,7 @@ const checkAuthorized = (req) => {
 const requireOwner = (req) => {
   if (req.signedCookies["user"] === NIL) return true;
   return false;
-}
+};
 
 const unauthorizedError = (res) =>
   res.status(401).send({ error: "Unauthorized" });
@@ -122,11 +126,11 @@ app.get("/images/:name", (req, res) => {
 });
 app.get("/users/:id", (req, res) => {
   const user = users.find((user) => user.id === req.params.id);
-  const authorized = checkAuthorized(req);
-  if (!authorized) {
-    unauthorizedError(res);
-    return;
-  }
+  // const authorized = checkAuthorized(req);
+  // if (!authorized) {
+  //   unauthorizedError(res);
+  //   return;
+  // }
   res.status(200).send(user);
 });
 app.get("/users/", (req, res) => {
@@ -179,16 +183,17 @@ app.get("/stores/", (req, res) => {
     return;
   }
   res.status(200).send(paginatedStores);
-
-})
+});
 
 app.get("/products/", (req, res) => {
   const includeDeleted = req.query.includeDeleted
-  ? req.query.includeDeleted === "true"
-  : //set to false if unset or false
-    false;
-const fliteredProducts = includeDeleted ? products : removeDeleted(removeUnapproved(products));
-console.log(fliteredProducts)
+    ? req.query.includeDeleted === "true"
+    : //set to false if unset or false
+      false;
+  const fliteredProducts = includeDeleted
+    ? products
+    : removeDeleted(removeUnapproved(products));
+  console.log(fliteredProducts);
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 100;
   const startIndex = (page - 1) * limit;
@@ -256,7 +261,7 @@ app.post("/users/auth", async (req, res) => {
     user.password = undefined;
     res
       .cookie("user", user.id, {
-        expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        expires: new Date(Date.now() + 24 * 60 * 60 * 100000),
         signed: true,
         sameSite: "none",
         secure: true,
@@ -286,7 +291,8 @@ app.post("/users/create-store/", async (req, res) => {
   console.log(data);
   const user = users.find((user) => user.id === req.signedCookies["user"]);
   if (user) {
-    await addStore(data, user, res);
+    let store = await addStore(data, user, res);
+    res.status(200).send(store)
   } else {
     res.status(401).send({ message: "Unauthorized" });
   }
@@ -299,13 +305,13 @@ app.put("/users/:id", async (req, res) => {
   const user = users.find((user) => user.id === req.params.id);
   if (user) {
     const data = req.body; //.removeEmpty();
-  if(user.admin != data.admin && !requireOwner(req)){
-      unauthorizedError(res)
-      return
-  }
+    if (user.admin != data.admin && !requireOwner(req)) {
+      unauthorizedError(res);
+      return;
+    }
     console.log(data);
     for (let key in data) {
-      user[key] = data[key];
+      user[key] = data[key] == "null" ? null : data[key];
     }
     await db.write();
     res.status(200).send(user);
@@ -326,7 +332,7 @@ app.put("/products/:id", async (req, res) => {
   if (product) {
     const data = req.body; //.removeEmpty();
     for (let key in data) {
-      product[key] = data[key];
+      product[key] = data[key] == "null" ? null : data[key];
     }
     await db.write();
     res.status(200).send(product);
@@ -339,7 +345,7 @@ app.put("/stores/:id", async (req, res) => {
   if (store) {
     const data = req.body; //.removeEmpty();
     for (let key in data) {
-      store[key] = data[key];
+      store[key] = data[key] == "null" ? null : data[key];
     }
     await db.write();
     res.status(200).send(store);
@@ -365,7 +371,7 @@ app.put("/orders/:id", async (req, res) => {
   if (order) {
     const data = req.body;
     for (let key in data) {
-      order[key] = data[key];
+      order[key] = data[key] == "null" ? null : data[key];
     }
     await db.write();
     res.status(200).send(order);
