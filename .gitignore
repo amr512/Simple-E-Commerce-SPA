@@ -2,5 +2,4 @@ node_modules/
 jsProject.* 
 lazystuff.js
 test.js
-/web/.vscode
 web/.vs/web/v17/DocumentLayout.json

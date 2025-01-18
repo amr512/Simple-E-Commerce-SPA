@@ -34,7 +34,7 @@
       "orderIDs": [],
       "seller": true,
       "storeID": "ffffffff-ffff-ffff-ffff-ffffffffffff",
-      "deleted": true,
+      "deleted": false,
       "admin": false,
       "phone": "0123456789",
       "address": "wahoooasdasdda"

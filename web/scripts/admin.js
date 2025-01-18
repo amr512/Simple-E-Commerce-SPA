@@ -16,7 +16,7 @@ window.addEventListener("load", async () => {
     currentuser.id != "00000000-0000-0000-0000-000000000000"
   )
     window.location.assign("login.html");
-  new DocElement("#greeting").text(`Hello, {{name}}!`);
+  new DocElement("#greeting").text(`Hello, ${currentuser.name}!`);
   new DocElement("#email").text(currentuser.email);
   const includeDeleted = new DocElement("#includeDeleted");
   let selectedID;
