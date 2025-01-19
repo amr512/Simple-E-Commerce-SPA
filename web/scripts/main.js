@@ -9,34 +9,26 @@ window.addEventListener("load", async () => {
   const products = (await (
     await requests.GET(`http://localhost:5500/products`)
   ).json()).filter(prod=>prod.stock>0);
-  products.forEach(async (prod) => {
-    (await createProductCard(prod)).appendTo("#cards");
-  });
-  products.forEach(async (prod) => {
-    (await createProductCard(prod)).appendTo("#cards");
-  });
-  products.forEach(async (prod) => {
-    (await createProductCard(prod)).appendTo("#cards");
-  });
-  products.forEach(async (prod) => {
-    (await createProductCard(prod)).appendTo("#cards");
-  });
-  products.forEach(async (prod) => {
-    (await createProductCard(prod)).appendTo("#cards");
-  });
-  products.forEach(async (prod) => {
-    (await createProductCard(prod)).appendTo("#cards");
-  });
-  products.forEach(async (prod) => {
-    (await createProductCard(prod)).appendTo("#cards");
-  });
-  products.forEach(async (prod) => {
-    (await createProductCard(prod)).appendTo("#cards");
-  });
-  products.forEach(async (prod) => {
-    (await createProductCard(prod)).appendTo("#cards");
-  });
-
+  let searchQuery = new window.URLSearchParams(window.location.search).get("search")
+  if(searchQuery){
+    const filtered = products.filter(prod=>prod.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    if(filtered.length>0){
+      filtered.forEach(async prod=>
+        (await createProductCard(prod)).appendTo("#cards")
+      )
+    }else{
+      new DocElement("div","",{},"flex-column justify-center align-center").append(
+        [
+          new DocElement("h1",`no products matching query "${searchQuery}" found`).appendTo("#cards"),
+          new DocElement("a", "",{href:"index.html"}).append(new DocElement("button","return home")).appendTo("#cards")
+        ]
+      ).appendTo("#cards")
+    }
+  }else{
+    products.forEach(async (prod) => {
+      (await createProductCard(prod)).appendTo("#cards");
+    });
+  }
   // let loadedPage = "Home";
   // let pages = p.filter(obj => !obj.hidden).map((obj) => {
   //     return new DocElement("a", obj.name, {id:obj.name,path:obj.path}, ["nav-link"]).appendTo("#navbar #nav-links")

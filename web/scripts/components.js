@@ -26,6 +26,18 @@ import { DocElement, errorAlert } from "./helpers.js";
 
 const createNavbar = (currentPage) => {
   const conatiner = new DocElement("div", "", {}, "nav-container");
+  const searchInput = new DocElement("input", "", {
+    id: "search",
+    type: "text",
+    placeholder: "Search...",
+  });
+  let query = ""
+  const searchButton = new DocElement(
+    "i",
+    "",
+    {},
+    "fa-solid fa-magnifying-glass search-button"
+  );
   let cartButton = conatiner.append(
     new DocElement("div", "", { id: "navbar" }, "navbar").append([
       new DocElement("div", "", { id: "logo" }, "logo").append(
@@ -33,26 +45,18 @@ const createNavbar = (currentPage) => {
           new DocElement("img", "", { src: "/images/logo.png" }, "nav-logo")
         )
       ),
-      new DocElement("div", "", { id: "nav-links" }, "nav-links").append(
-        currentPage == "home" && [
-          new DocElement("a", "Home", { id: "home" }, "nav-link"),
-          new DocElement("a", "BigBricks", { id: "bigbricks" }, "nav-link"),
-          new DocElement("a", "SmallBricks", { id: "smallbricks" }, "nav-link"),
-          new DocElement("a", "NotBricks", { id: "notbricks" }, "nav-link"),
-        ]
-      ),
+      new DocElement("div", "", { id: "nav-links" }, "nav-links"),
+      // .append(
+      //   currentPage == "home" && [
+      //     new DocElement("a", "Home", { id: "home" }, "nav-link"),
+      //     new DocElement("a", "BigBricks", { id: "bigbricks" }, "nav-link"),
+      //     new DocElement("a", "SmallBricks", { id: "smallbricks" }, "nav-link"),
+      //     new DocElement("a", "NotBricks", { id: "notbricks" }, "nav-link"),
+      //   ]
+      // ),
       new DocElement("div", "", { id: "search" }, "search").append([
-        new DocElement("input", "", {
-          id: "search",
-          type: "text",
-          placeholder: "Search...",
-        }),
-        new DocElement(
-          "i",
-          "",
-          {},
-          "fa-solid fa-magnifying-glass search-button"
-        ),
+        searchInput,
+        searchButton
       ]),
       new DocElement("div", "", { id: "icons" }, "icons").append([
         currentPage != "login" &&
@@ -73,7 +77,10 @@ const createNavbar = (currentPage) => {
       ]),
     ])
   );
-
+  searchButton.addEventListener("click", (e) => {
+    if(searchInput.element.value.trim())
+    window.location.href = encodeURI(`/index.html?search=${searchInput.element.value.trim()}`);
+  });
   cartButton.addEventListener("click", (e) => {
     createCartPopover().then((e) => {
       e.appendTo(cartButton);
@@ -134,7 +141,7 @@ const createTable = (tableObj) => {
   /*
     {header:cell}
     */
-  if(tableObj.length==0 || !tableObj[0])return new DocElement("table")
+  if (tableObj.length == 0 || !tableObj[0]) return new DocElement("table");
   const table = new DocElement("table");
   const header = new DocElement("tr");
   Object.entries(tableObj[0]).forEach(([key, value]) => {
@@ -164,7 +171,9 @@ const createTable = (tableObj) => {
               value.map(
                 (v) =>
                   new DocElement("img", "", {
-                    src: v.startsWith("http") ? v : "http://localhost:5500/images/" + v,
+                    src: v.startsWith("http")
+                      ? v
+                      : "http://localhost:5500/images/" + v,
                   })
               )
             )
@@ -191,7 +200,9 @@ const createProductCard = async (product) => {
   const div1 = new DocElement("div");
   const div2 = new DocElement("div");
   const img = new DocElement("img", "", {
-    src: product.images[0].startsWith("http") ? product.images[0] : "http://localhost:5500/images/" + product.images[0],
+    src: product.images[0].startsWith("http")
+      ? product.images[0]
+      : "http://localhost:5500/images/" + product.images[0],
   });
   const title = new DocElement("h3", product.name);
   const price = new DocElement(
@@ -224,7 +235,11 @@ const createProductCard = async (product) => {
       }
       addToCart.text(cart.items[index].quantity);
     } else {
-      cart.items.push({ id: e.target.product, quantity: 1,price:product.price });
+      cart.items.push({
+        id: e.target.product,
+        quantity: 1,
+        price: product.price,
+      });
       // console.log("not found",cart.items[cart.items.length-1])
       addToCart.text(1);
     }
@@ -265,7 +280,9 @@ const createCheckoutTable = async () => {
             href: `/pages/product.html?id=${product.id}`,
           }).append(
             new DocElement("img", "", {
-              src: product.images[0].startsWith("http") ? product.images[0] : "http://localhost:5500/images/" + product.images[0]
+              src: product.images[0].startsWith("http")
+                ? product.images[0]
+                : "http://localhost:5500/images/" + product.images[0],
             })
           )
         ),
@@ -317,7 +334,11 @@ const createProductDetailsPage = async (prodID) => {
   const img = new DocElement(
     "img",
     "",
-    { src: product.images[currentImg].startsWith("http")?product.images[currentImg]: `http://localhost:5500/images/${product.images[currentImg]}` },
+    {
+      src: product.images[currentImg].startsWith("http")
+        ? product.images[currentImg]
+        : `http://localhost:5500/images/${product.images[currentImg]}`,
+    },
     "product-image"
   );
   const controls = new DocElement(
@@ -337,7 +358,9 @@ const createProductDetailsPage = async (prodID) => {
 
       img.setAttribute(
         "src",
-        product.images[currentImg].startsWith("http")?product.images[currentImg]:`http://localhost:5500/images/${product.images[currentImg]}`
+        product.images[currentImg].startsWith("http")
+          ? product.images[currentImg]
+          : `http://localhost:5500/images/${product.images[currentImg]}`
       );
     }
   });
@@ -347,7 +370,9 @@ const createProductDetailsPage = async (prodID) => {
       crnt.text(`Image ${currentImg + 1}/${imgLen}`);
       img.setAttribute(
         "src",
-        product.images[currentImg].startsWith("http")?product.images[currentImg]:`http://localhost:5500/images/${product.images[currentImg]}`
+        product.images[currentImg].startsWith("http")
+          ? product.images[currentImg]
+          : `http://localhost:5500/images/${product.images[currentImg]}`
       );
     }
   });
@@ -385,7 +410,7 @@ const createProductDetailsPage = async (prodID) => {
         }`
       );
     } else {
-      cart.items.push({ id: product.id, quantity: 1,price:product.price });
+      cart.items.push({ id: product.id, quantity: 1, price: product.price });
       icon.text(`in cart 1`);
     }
     localStorage.setItem("cart", JSON.stringify(cart));
