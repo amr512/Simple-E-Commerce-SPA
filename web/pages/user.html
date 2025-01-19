@@ -7,6 +7,7 @@
     <script type="module" src="/scripts/user.js"></script>
     <link href="/styles/main.css" rel="stylesheet" />
     <link href="/styles/form.css" rel="stylesheet" />
+    <!-- <link href="/styles/admin.css" rel="stylesheet" /> -->
     <link href="/styles/user.css" rel="stylesheet" />
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -33,7 +34,7 @@
           <i class="fa-solid fa-cart-shopping"></i>
         </div>
       </div> -->
-      <!-- </div> -->
+    <!-- </div> -->
     <div class="b"></div>
     <div class="content" id="content">
       <div
@@ -111,9 +112,9 @@
             <p>Confirm New Password</p>
             <div>
               <input
-              type="password"
-              name="confirmNewPassword"
-              id="confirmNewPassword"
+                type="password"
+                name="confirmNewPassword"
+                id="confirmNewPassword"
               />
             </div>
           </div>
@@ -122,7 +123,17 @@
             <input type="submit" value="Reset" />
           </div>
         </form>
-        <pre></pre>
+      </div>
+      <div class="flex-column">
+        <h2>orders</h2>
+        <div id="page-controls" class="flex-row stretch hidden">
+          <input type="button" id="previous" value="Previous" />
+          <input type="number" id="page-number" value="1" />
+          <input type="button" id="goto" value="Go" />
+          <input type="button" id="next" value="Next" />
+          
+        </div>
+        <div id="table-container"></div>
       </div>
       <div class="align-self-end">
         <input id="logout" type="button" value="Logout" />

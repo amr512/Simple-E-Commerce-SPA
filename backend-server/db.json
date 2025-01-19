@@ -159,6 +159,19 @@
       "admin": false,
       "phone": "0123456789",
       "address": "wahoooasdasdda"
+    },
+    {
+      "id": "198e2943-156f-41c5-b755-e00d065505ea",
+      "email": "sign@up.co",
+      "password": "user123",
+      "name": "sd",
+      "orderIds": [],
+      "seller": true,
+      "storeID": "b2533ccc-dadc-48e9-9d7f-55899eb389cd",
+      "deleted": false,
+      "admin": false,
+      "phone": "123",
+      "address": "de"
     }
   ],
   "stores": [
@@ -184,6 +197,12 @@
       "id": "572577ff-9df4-415c-83c3-78ceeb42cb00",
       "ownerID": "44444444-4444-4444-4444-444444444444",
       "name": "GreatestStoreForUser4",
+      "approved": false
+    },
+    {
+      "id": "b2533ccc-dadc-48e9-9d7f-55899eb389cd",
+      "ownerID": "198e2943-156f-41c5-b755-e00d065505ea",
+      "name": "the signedup guy",
       "approved": false
     }
   ],
@@ -260,6 +279,23 @@
       ],
       "stock": 1,
       "approved": true
+    },
+    {
+      "id": "fafa83fd-14f0-433e-80ba-93c8bc36f679",
+      "storeID": "b2533ccc-dadc-48e9-9d7f-55899eb389cd",
+      "name": "failed",
+      "description": "can't take image uploads on time",
+      "price": "9.99",
+      "deleted": false,
+      "categories": [
+        "failure"
+      ],
+      "images": [
+        "https://cdn.sstatic.net/Img/teams/teams-promo.svg?v=e507948b81bf",
+        "https://www.gravatar.com/avatar/8994880073403c8930afaa5a86f49101?s=64&d=identicon&r=PG"
+      ],
+      "stock": "4",
+      "approved": true
     }
   ],
   "reviews": [
@@ -282,31 +318,69 @@
   ],
   "orders": [
     {
-      "id": "11111111-1111-1111-1111-111111111111",
-      "userID": "66666666-6666-6666-6666-666666666666",
-      "products": [],
-      "address": "wahoooasdasdda",
-      "date": "2024-07-24T12:00:00.000Z",
-      "total": 400,
+      "id": "0077d29f-fd9c-4ba5-af76-0096d3fa8218",
+      "userID": "00000000-0000-0000-0000-000000000000",
+      "products": [
+        {
+          "id": "33333333-3333-3333-3333-333333333333",
+          "quantity": 1,
+          "price": 0
+        },
+        {
+          "id": "22222222-2222-2222-2222-222222222222",
+          "quantity": 3,
+          "price": 200
+        }
+      ],
+      "address": "Here, he lives",
+      "date": "Sun Jan 19 2025 04:12:06 GMT+0200 (Eastern European Standard Time)",
+      "total": 600,
       "status": "delivered"
     },
     {
-      "id": "22222222-2222-2222-2222-222222222223",
-      "userID": "66666666-6666-6666-6666-666666666666",
-      "products": [],
-      "address": "wahoooasdasdda",
-      "date": "2024-07-25T12:00:00.000Z",
-      "total": 100,
+      "id": "f6d0a91e-2d63-4860-a9da-1470546fd7ea",
+      "userID": "00000000-0000-0000-0000-000000000000",
+      "products": [
+        {
+          "id": "11111111-1111-1111-1111-111111111111",
+          "quantity": 4,
+          "price": 100
+        }
+      ],
+      "address": "Here, he lives",
+      "date": "Sun Jan 19 2025 04:19:58 GMT+0200 (Eastern European Standard Time)",
+      "total": 400,
       "status": "pending"
     },
     {
-      "id": "33333333-3333-3333-3333-333333333333",
-      "userID": "66666666-6666-6666-6666-666666666666",
-      "products": [],
-      "address": "wahoooasdasdda",
-      "date": "2024-07-26T12:00:00.000Z",
-      "total": 600,
-      "status": "delivered"
+      "id": "3c96dcc3-6070-4410-8837-033032739854",
+      "userID": "198e2943-156f-41c5-b755-e00d065505ea",
+      "products": [
+        {
+          "id": "11111111-1111-1111-1111-111111111111",
+          "quantity": 5,
+          "price": 100
+        }
+      ],
+      "address": "de",
+      "date": "Sun Jan 19 2025 04:24:40 GMT+0200 (Eastern European Standard Time)",
+      "total": 500,
+      "status": "pending"
+    },
+    {
+      "id": "36bebb66-e839-4a21-8e5c-2619b69b025e",
+      "userID": "00000000-0000-0000-0000-000000000000",
+      "products": [
+        {
+          "id": "11111111-1111-1111-1111-111111111111",
+          "quantity": 3,
+          "price": 100
+        }
+      ],
+      "address": "Here, he lives",
+      "date": "Sun Jan 19 2025 04:27:41 GMT+0200 (Eastern European Standard Time)",
+      "total": 300,
+      "status": "pending"
     }
   ]
 }

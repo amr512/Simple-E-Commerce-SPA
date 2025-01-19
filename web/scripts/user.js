@@ -1,4 +1,4 @@
-import { createNavbar } from "./components.js";
+import { createNavbar, createTable } from "./components.js";
 import { DocElement, errorAlert, requests, successAlert } from "./helpers.js";
 
 window.addEventListener("load", async () => {
@@ -126,4 +126,37 @@ window.addEventListener("load", async () => {
       })
       .then(() => window.location.assign("login.html"));
   });
+  let page = 1;
+  const updateContent = async (page) => {
+    const tableContainer = new DocElement("#table-container");
+    tableContainer.element.innerHTML = ""
+    new DocElement("#page-number").element.value = page;
+    const response = await (
+      await requests.GET(
+        `http://localhost:5500/orders`
+      )
+    ).json();
+    let table = createTable(response.filter(el=>el.userID === currentuser.id));
+    table.appendTo("#table-container");
+  };
+  updateContent(1)
+  const pageControls = new DocElement("#page-controls").element.remove();
+  // pageControls.addEventListener("click", (e) => {
+  //   switch (e.target.id) {
+  //     case "previous":
+  //       if (page > 1) {
+  //         updateContent(--page);
+  //       }
+  //       break;
+  //     case "next":
+  //       updateContent(++page);
+  //       break;
+  //     case "goto":
+  //       page = new DocElement("#page-number").element.value;
+  //       updateContent(page);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // });
 });

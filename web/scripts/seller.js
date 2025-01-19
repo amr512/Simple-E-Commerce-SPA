@@ -27,7 +27,80 @@ window.addEventListener("load", async () => {
 
   const tabs = [new DocElement("#products"), new DocElement("#orders")];
 
-  const createProduct = async (id) => {
+  // const createProduct = async (id) => {
+    const form = new DocElement("#new");
+    const submit = new DocElement("#submit-new");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formdata =Object.fromEntries(new FormData(e.target))
+      const data =  {
+        "id": "",
+        "storeID": store.id,
+        "name": formdata.name,
+        "description": formdata.description,
+        "price": formdata.price,
+        "deleted": false,
+        "categories": formdata.categories.split(","),
+        "images": formdata.images.split(",").map(e=>e.replace(/\"/gm,"")),
+        "stock": formdata.stock,
+        "approved": false
+      }
+      let res = await requests.POST("http://localhost:5500/products/new" ,data)
+      if(res.status == 200){
+        await successAlert("Product created successfully")
+        form.element.reset()
+      }else{
+         errorAlert("Failed to create product")
+    
+      }
+      // inputs.forEach((e) => {
+      //   switch (e.element.dataType) {
+      //     case "Boolean":
+      //       data[e.element.name] = Boolean(e.element.checked);
+      //       break;
+      //     case "String":
+      //       data[e.element.name] = e.element.value;
+      //       break;
+      //     case "Number":
+      //       data[e.element.name] = Number(e.element.value);
+      //       break;
+      //     case null:
+      //       data[e.element.name] =
+      //         e.element.value === "" ? null : e.element.value;
+      //       break;
+      //     default:
+      //       try {
+      //         data[e.element.name] = JSON.parse(e.element.value) || null;
+      //       } catch {}
+      //       break;
+      //   }
+      // });
+      // console.log(data);
+      // console.log(removeEmpty(data));
+      // if (
+      //   (
+      //     await requests.PUT(
+      //       `http://localhost:5500/${currentTab}/${data.id}`,
+      //       data
+      //     )
+      //   ).status == 200
+      // ) {
+      //   successAlert("Data updated successfully").then((e) =>
+      //     updateContent(currentTab, page).then((e) => {
+      //       let el = new DocElement(`.id${data.id}`);
+      //       el.element.click();
+      //       setTimeout(
+      //         (e) => el.element.scrollIntoView({ behavior: "smooth" }),
+      //         200
+      //       );
+      //     })
+      //   );
+      // } else {
+      //   successAlert("Failed to update data");
+      // }
+    });
+  // };
+  const selectToEdit = async (id) => {
     const obj = await (
       await requests.GET(`http://localhost:5500/${currentTab}/${id}`)
     ).json();
@@ -48,9 +121,7 @@ window.addEventListener("load", async () => {
         type: typeof obj[key] == "boolean" ? "checkbox" : "text",
         checked: obj[key],
         dataType: obj[key]?.constructor.name || null,
-        disabled: ["id", "ownerID", "orderIDs", "storeID", "userID"].includes(
-          key
-        ),
+        disabled: ["id","ownerID","orderIDs","storeID","userID"].includes(key),
       });
       let label = new DocElement("label", key, { for: key });
       inputs.push(input);
@@ -64,7 +135,7 @@ window.addEventListener("load", async () => {
       value: "submit",
     });
     submit.appendTo("#selected");
-    submit.addEventListener("click", async (e) => {
+    submit.addEventListener("click", async(e) => {
       const data = {};
       inputs.forEach((e) => {
         switch (e.element.dataType) {
@@ -88,32 +159,20 @@ window.addEventListener("load", async () => {
             break;
         }
       });
-      console.log(data);
-      console.log(removeEmpty(data));
-      if (
-        (
-          await requests.PUT(
-            `http://localhost:5500/${currentTab}/${data.id}`,
-            data
-          )
-        ).status == 200
-      ) {
-        successAlert("Data updated successfully").then((e) =>
-          updateContent(currentTab, page).then((e) => {
-            let el = new DocElement(`.id${data.id}`);
-            el.element.click();
-            setTimeout(
-              (e) => el.element.scrollIntoView({ behavior: "smooth" }),
-              200
-            );
-          })
-        );
-      } else {
-        successAlert("Failed to update data");
+      console.log(data)
+      console.log(removeEmpty(data))
+      if((await requests.PUT(`http://localhost:5500/${currentTab}/${data.id}`,data)).status == 200){
+        successAlert("Data updated successfully")
+        .then(e=>updateContent(currentTab,page).then(e=>{
+          let el = new DocElement(`.id${data.id}`)
+          el.element.click()
+          setTimeout(e=>el.element.scrollIntoView({behavior:"smooth"}),200)
+        }))
+      }else{
+        successAlert("Failed to update data")
       }
     });
   };
-
   const updateContent = async (content, page) => {
     const tableContainer = new DocElement("#table-container");
     const fields = new DocElement("#fields");
@@ -124,7 +183,7 @@ window.addEventListener("load", async () => {
     new DocElement("#page-number").element.value = page;
     const response = await (
       await requests.GET(
-        `http://localhost:5500/${content}?page=${page}&limit=5&includeDeleted=${includeDeleted}`
+        `http://localhost:5500/${content}?page=${page}&limit=5&includeDeleted=${includeDeleted}&store=${store.id}`
       )
     ).json();
     let table = createTable(response);
@@ -147,6 +206,12 @@ window.addEventListener("load", async () => {
     tab.addEventListener("click", () => {
       tabs.forEach((t) => t.removeClass("active"));
       tab.addClass("active");
+      tab.element.id == "products"?
+      new DocElement("#new").removeClass("hidden"):
+      new DocElement("#new").addClass("hidden")
+      try{
+        new DocElement("#submit").element.remove()
+      }catch{}
       selectedID = undefined;
       page = 1;
       currentTab = tab.element.id;

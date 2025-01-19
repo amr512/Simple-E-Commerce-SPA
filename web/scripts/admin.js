@@ -142,6 +142,9 @@ window.addEventListener("load", async () => {
       tabs.forEach((t) => t.removeClass("active"));
       tab.addClass("active");
       selectedID = undefined;
+      try{
+        new DocElement("#submit").element.remove()
+      }catch{}
       page = 1;
       currentTab = tab.element.id;
       updateContent(currentTab, page);

@@ -96,7 +96,7 @@ const validateInput = (value, validateAs) => {
       break;
   }
   if (!isValid)
-    errorMessage = `Invalid ${validateAs || "- field can't be empty"}`;
+    errorMessage = `Invalid ${validateAs}`;
   return errorMessage;
 };
 

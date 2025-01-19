@@ -8,6 +8,7 @@ import fs from "fs";
 
 // #region init
 const app = e();
+
 app.use(e.json());
 app.use(
   cors({
@@ -23,7 +24,12 @@ app.use(
   })
 );
 app.use(cookieParser("superdupersecret"));
-app.use(bodyParser.json({ type: "*" }));
+app.use(
+  bodyParser.json({
+    type: "application/json, application/x-www-form-urlencoded",
+  })
+);
+app.use(bodyParser.urlencoded({ extended: true }));
 const PORT = 5500;
 const db = await JSONFilePreset("./db.json", {
   users: [],
@@ -39,14 +45,14 @@ const { users, stores, products, reviews, orders } = db.data;
 // await db.write()
 // #region helper functions
 
-const addUser = async (data) => {
+const addUser = async (req, res, data) => {
   data.id = newUUID();
   if (!users.find((user) => user.email === data.email)) {
     users.push(data);
     await db.write();
-    return true;
+    res.status(200).send(data);
   } else {
-    return false;
+    res.status(400).send({ message: "user already exists" });
   }
 };
 
@@ -55,7 +61,7 @@ const addStore = async (data, user, res) => {
     id: newUUID(),
     ownerID: data.user,
     name: data.name,
-    approved:false
+    approved: false,
   };
 
   const storeExists = stores.find((_store) => _store.ownerID === store.ownerID);
@@ -73,9 +79,9 @@ const addStore = async (data, user, res) => {
   }
   stores.push(store);
   user.storeID = store.id;
-  user.seller = true
+  user.seller = true;
   await db.write();
-  return store
+  return store;
 };
 
 const checkAuthorized = (req) => {
@@ -190,9 +196,10 @@ app.get("/products/", (req, res) => {
     ? req.query.includeDeleted === "true"
     : //set to false if unset or false
       false;
-  const fliteredProducts = includeDeleted
-    ? products
-    : removeDeleted(removeUnapproved(products));
+  const notSoFiltered = includeDeleted ? products : removeDeleted(products);
+  const fliteredProducts = req.query.store
+    ? notSoFiltered.filter((prod) => prod.storeID === req.query.store)
+    : notSoFiltered;
   console.log(fliteredProducts);
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 100;
@@ -241,6 +248,7 @@ app.get("/store/orders/:storeid", (req, res) => {
 
 // #endregion
 // #region post routes
+
 app.post("/users/auth", async (req, res) => {
   // console.log(req.headers["content-type"]);
   // console.log(req.signedCookies["user"])
@@ -292,10 +300,30 @@ app.post("/users/create-store/", async (req, res) => {
   const user = users.find((user) => user.id === req.signedCookies["user"]);
   if (user) {
     let store = await addStore(data, user, res);
-    res.status(200).send(store)
+    res.status(200).send(store);
   } else {
     res.status(401).send({ message: "Unauthorized" });
   }
+});
+
+app.post("/users/new", async (req, res) => {
+  const data = req.body;
+
+  await addUser(req, res, data);
+});
+app.post("/products/new", async (req, res) => {
+  const data = req.body;
+  data.id = newUUID();
+  products.push(data);
+  await db.write();
+  res.status(200).send(data);
+});
+app.post("/orders/new", async (req, res) => {
+  const data = req.body;
+  data.id = newUUID();
+  orders.push(data);
+  await db.write();
+  res.status(200).send(data);
 });
 
 //#endregion

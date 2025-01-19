@@ -130,11 +130,11 @@ const createCartPopover = async () => {
   return popover;
 };
 
-const createTable = (tableObj = [{}]) => {
+const createTable = (tableObj) => {
   /*
     {header:cell}
     */
-
+  if(tableObj.length==0 || !tableObj[0])return new DocElement("table")
   const table = new DocElement("table");
   const header = new DocElement("tr");
   Object.entries(tableObj[0]).forEach(([key, value]) => {
@@ -164,7 +164,7 @@ const createTable = (tableObj = [{}]) => {
               value.map(
                 (v) =>
                   new DocElement("img", "", {
-                    src: "http://localhost:5500/images/" + v,
+                    src: v.startsWith("http") ? v : "http://localhost:5500/images/" + v,
                   })
               )
             )
@@ -191,7 +191,7 @@ const createProductCard = async (product) => {
   const div1 = new DocElement("div");
   const div2 = new DocElement("div");
   const img = new DocElement("img", "", {
-    src: `http://localhost:5500/images/${product.images[0]}`,
+    src: product.images[0].startsWith("http") ? product.images[0] : "http://localhost:5500/images/" + product.images[0],
   });
   const title = new DocElement("h3", product.name);
   const price = new DocElement(
@@ -224,7 +224,7 @@ const createProductCard = async (product) => {
       }
       addToCart.text(cart.items[index].quantity);
     } else {
-      cart.items.push({ id: e.target.product, quantity: 1 });
+      cart.items.push({ id: e.target.product, quantity: 1,price:product.price });
       // console.log("not found",cart.items[cart.items.length-1])
       addToCart.text(1);
     }
@@ -261,9 +261,13 @@ const createCheckoutTable = async () => {
       const deleteBtn = new DocElement("button", "delete");
       row.append([
         new DocElement("td").append(
-          new DocElement("img", "", {
-            src: "http://localhost:5500/images/" + product.images[0],
-          })
+          new DocElement("a", "", {
+            href: `/pages/product.html?id=${product.id}`,
+          }).append(
+            new DocElement("img", "", {
+              src: product.images[0].startsWith("http") ? product.images[0] : "http://localhost:5500/images/" + product.images[0]
+            })
+          )
         ),
         new DocElement("td", product.name),
         new DocElement("td").append(amount).append(deleteBtn),
@@ -272,11 +276,19 @@ const createCheckoutTable = async () => {
       totalPrice += product.price * item.quantity;
       table.append(row);
       amount.addEventListener("change", (e) => {
-        e.preventDefault();
         if (e.target.value > product.stock) {
           amount.setAttribute("value", product.stock);
           errorAlert(`Product quantity can't exceed available stock`);
         }
+      });
+      deleteBtn.addEventListener("click", (e) => {
+        localStorage.setItem(
+          "cart",
+          JSON.stringify({
+            items: cart.items.filter((item) => item.id != product.id),
+          })
+        );
+        row.element.remove();
       });
     })
   );
@@ -305,7 +317,7 @@ const createProductDetailsPage = async (prodID) => {
   const img = new DocElement(
     "img",
     "",
-    { src: `http://localhost:5500/images/${product.images[currentImg]}` },
+    { src: product.images[currentImg].startsWith("http")?product.images[currentImg]: `http://localhost:5500/images/${product.images[currentImg]}` },
     "product-image"
   );
   const controls = new DocElement(
@@ -315,53 +327,66 @@ const createProductDetailsPage = async (prodID) => {
     "product-controls"
   );
   const prevImg = new DocElement("button", "previous image");
-  const crnt = new DocElement("p", `Image ${currentImg + 1}/${imgLen}`)
+  const crnt = new DocElement("p", `Image ${currentImg + 1}/${imgLen}`);
   const nextImg = new DocElement("button", "next image");
-  controls.append([prevImg,crnt, nextImg]);
+  controls.append([prevImg, crnt, nextImg]);
   prevImg.addEventListener("click", (e) => {
     if (currentImg > 0) {
-    currentImg--;
-    crnt.text(`Image ${currentImg + 1}/${imgLen}`)
-    
-    img.setAttribute(
-      "src",
-      `http://localhost:5500/images/${product.images[currentImg]}`
-    );
-  }
-});
-nextImg.addEventListener("click", (e) => {
-  if (currentImg < imgLen - 1) {
-    currentImg++;
-        crnt.text(`Image ${currentImg + 1}/${imgLen}`)
+      currentImg--;
+      crnt.text(`Image ${currentImg + 1}/${imgLen}`);
+
       img.setAttribute(
         "src",
-        `http://localhost:5500/images/${product.images[currentImg]}`
-      )
+        product.images[currentImg].startsWith("http")?product.images[currentImg]:`http://localhost:5500/images/${product.images[currentImg]}`
+      );
     }
   });
-  const titleDiv = new DocElement("div", "", {}, "product-title-container")
+  nextImg.addEventListener("click", (e) => {
+    if (currentImg < imgLen - 1) {
+      currentImg++;
+      crnt.text(`Image ${currentImg + 1}/${imgLen}`);
+      img.setAttribute(
+        "src",
+        product.images[currentImg].startsWith("http")?product.images[currentImg]:`http://localhost:5500/images/${product.images[currentImg]}`
+      );
+    }
+  });
+  const titleDiv = new DocElement("div", "", {}, "product-title-container");
   const title = new DocElement("h1", product.name, "", "product-title");
-  const addToCart = new DocElement("button", "", { id: "add-to-cart" }, "add-to-cart");
-  const icon = new DocElement("i", `in cart ${JSON.parse(localStorage.getItem("cart")).items.find(item=>item.id==product.id).quantity || 0}`, {}, "fa-solid fa-cart-shopping")
-  addToCart.append(
-    icon
-);
+  const addToCart = new DocElement(
+    "button",
+    "",
+    { id: "add-to-cart" },
+    "add-to-cart"
+  );
+  const icon = new DocElement(
+    "i",
+    `in cart ${
+      JSON.parse(localStorage.getItem("cart"))?.items?.find(
+        (item) => item.id == product.id
+      )?.quantity || 0
+    }`,
+    {},
+    "fa-solid fa-cart-shopping"
+  );
+  addToCart.append(icon);
   addToCart.addEventListener("click", (e) => {
     const cart = JSON.parse(localStorage.getItem("cart") || `{"items":[]}`);
-    const index = cart.items.findIndex(
-      (item) => item.id == product.id
-    );
+    const index = cart.items.findIndex((item) => item.id == product.id);
     if (index > -1) {
       cart.items[index].quantity++;
       if (cart.items[index].quantity > product.stock) {
         errorAlert(`Product quantity can't exceed available stock`);
         cart.items[index].quantity = product.stock;
       }
-      icon.text( `in cart ${cart.items.find(item=>item.id==product.id).quantity || 0}`);
+      icon.text(
+        `in cart ${
+          cart.items.find((item) => item.id == product.id).quantity || 0
+        }`
+      );
     } else {
-      cart.items.push({ id: product.id, quantity: 1 });
-      icon.text( `in cart 1`);
-
+      cart.items.push({ id: product.id, quantity: 1,price:product.price });
+      icon.text(`in cart 1`);
     }
     localStorage.setItem("cart", JSON.stringify(cart));
   });

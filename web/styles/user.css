@@ -1,3 +1,78 @@
 form :not(input[type="submit"]){
   width: 100%;
 }
+
+.table-legend{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+table {
+  border-collapse: collapse;
+  flex: 1 1 100%;
+  max-width: 100%;
+}
+
+th,
+td {
+  border: 1px solid black;
+  padding: 8px;
+  /* max-width: 20vw; */
+  text-align: center;
+  /* truncate text */  
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* white-space: nowrap; */
+}
+td  img {
+  /* width: 150px; */
+  max-width: 100%;
+  max-height: 100px;
+}
+
+tr {
+  max-height: 10rem;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}
+tr.active {
+  background-color: #adffeb;
+}
+th {
+  background-color: #eeeeee;
+  /* border: 123px solid black; */
+}
+tr button{
+  border: 1px solid gray;
+}
+
+/* .table-responsive {
+} */
+
+#page-controls {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  width: 100%;
+  display: flex;
+  justify-content: stretch;
+  flex-direction: row;
+}
+#table-container {
+  display: flex;
+  justify-content: stretch;
+  width: 100%;
+}
+.hidden {
+  display: none;
+}

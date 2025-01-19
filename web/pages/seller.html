@@ -13,7 +13,6 @@
     />
   </head>
   <body>
-
     <div class="content" id="content">
       <div
         class="heading-section flex-row space-between align-center full-width margin-auto"
@@ -37,8 +36,39 @@
       </div>
       <form id="selected">
         <div id="fields"></div>
+        
       </form>
-    </div>
+      <form id="new">
+        <h2>Create New Product</h2>
+        <div>
+          <div>
+            <label for="email">Name</label>
+            <input type="text" class="" name="name" id="name" />
+          </div>
+          <div>
+            <label for="Description">Description</label>
+            <input type="text" name="description" />
+          </div>
+          
+          <div>
+            <label for="price">Price</label>
+            <input type="number" name="price" step="0.01" id="price" />
+          </div>
+          <div>
+            <label for="categories">Categories (comma separated)</label>
+            <input type="text" name="categories" id="categories" />
+          </div>
+          <div>
+            <label for="images">Image URLs (comma separated)</label>
+            <input type="text" name="images" id="images" />
+          </div>
+          <div>
+            <label for="stock">Stock</label>
+            <input type="number" name="stock" id="stock" />
+          </div>
+          <input type="submit" id="submit-new" value="Create Product" />
+        </div>
+      </form>
     </div>
   </body>
 </html>

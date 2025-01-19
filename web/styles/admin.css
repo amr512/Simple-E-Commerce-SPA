@@ -82,7 +82,7 @@ td {
   text-overflow: ellipsis;
   /* white-space: nowrap; */
 }
-td > img {
+td  img {
   /* width: 150px; */
   max-width: 100%;
   max-height: 100px;
